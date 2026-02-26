@@ -1,0 +1,55 @@
+{
+  "results": [
+    {
+      "n_haplotypes": 10,
+      "n_sites": 786,
+      "total_time_s": 0.5067755435593426,
+      "per_hap_s": 0.05067755435593426,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 20,
+      "n_sites": 1050,
+      "total_time_s": 0.9345539039932191,
+      "per_hap_s": 0.046727695199660954,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 50,
+      "n_sites": 1726,
+      "total_time_s": 3.8150908299721777,
+      "per_hap_s": 0.07630181659944356,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 100,
+      "n_sites": 2067,
+      "total_time_s": 9.177016636822373,
+      "per_hap_s": 0.09177016636822373,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 200,
+      "n_sites": 2436,
+      "total_time_s": 21.527695910073817,
+      "per_hap_s": 0.10763847955036908,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 500,
+      "n_sites": 2457,
+      "total_time_s": 54.15270924707875,
+      "per_hap_s": 0.1083054184941575,
+      "seq_mb": 5
+    },
+    {
+      "n_haplotypes": 1000,
+      "n_sites": 2582,
+      "total_time_s": 114.14386314805597,
+      "per_hap_s": 0.11414386314805597,
+      "seq_mb": 5
+    }
+  ],
+  "seq_bp": 5000000,
+  "seed": 42
+}

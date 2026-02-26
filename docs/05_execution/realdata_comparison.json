@@ -1,0 +1,21 @@
+{
+  "region": "chr21:10000000-20000000",
+  "n_individuals": 20,
+  "ibdmix": {
+    "lod_threshold": 3.0,
+    "n_segments": 345,
+    "n_individuals_with_segs": 20,
+    "segs_per_individual": 17.25,
+    "mean_af_diploid_pct": 2.620939,
+    "mean_seg_length_kb": 15.19384927536232,
+    "median_seg_length_kb": 11.535
+  },
+  "archaicpainter": {
+    "n_segments": 37,
+    "n_haplotypes": 40,
+    "segs_per_haplotype": 0.925,
+    "mean_af_haploid_pct": 2.16792825,
+    "mean_seg_length_kb": 234.37062162162164,
+    "n_haplotypes_with_segs": 28
+  }
+}

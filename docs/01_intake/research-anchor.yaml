@@ -1,0 +1,152 @@
+# Research Anchor — Phase 0
+# Generated: 2026-02-26
+# Status: AWAITING USER CONFIRMATION
+
+# ─── Identity ────────────────────────────────────────────────────
+domain: "Population Genomics / Paleogenomics"
+subdomain: "Archaic hominin introgression into modern human populations"
+research_type: "H"  # Hybrid: new computational method + biological discovery
+
+# ─── Expert Persona ───────────────────────────────────────────────
+expert_persona: >
+  Senior computational population geneticist specializing in archaic introgression
+  and human evolutionary history. Deep expertise in ancient DNA analysis,
+  coalescent theory, haplotype-based introgression detection, and large-scale
+  genomic data analysis (1000GP, HGDP, SGDP, Allen Ancient DNA Resource).
+  Reviewer lens: biological mechanism chains, alternative hypothesis exclusion,
+  batch effects, ascertainment bias in ancient DNA, replication across populations,
+  functional enrichment of introgressed loci.
+
+reviewer_focus:
+  - Novel biology: mechanism chains linking introgressed variants to phenotype/function
+  - Alternative hypothesis exclusion: ILS (incomplete lineage sorting) vs true introgression
+  - Ascertainment bias in ancient DNA and SNP arrays
+  - Replication across independent datasets and populations
+  - Batch effects and contamination controls in ancient samples
+  - Benchmarking against ADMIXTOOLS, MOSAIC, Sprime, ArchIE, etc.
+  - Functional enrichment and selection analysis of introgressed segments
+
+# ─── Research Strategy ────────────────────────────────────────────
+method_direction: "Li & Stephens haplotype matching framework extended to archaic genomes — NOT deep learning"
+method_rationale: >
+  Deep learning rejected: limited demonstrated success in this domain; demographic
+  misspecification is a major confounder for all simulation-trained DL methods
+  (Peede et al. 2025 review); lacks theoretical guarantees; expert knowledge
+  not naturally incorporated.
+  
+  Chosen approach: extend the Li & Stephens (2003) probabilistic haplotype
+  matching model to include archaic genomes (Neanderthal/Denisovan) as reference
+  panel members. Emission probabilities derived from coalescent theory (match
+  length distributions under H_introgressed vs H_AMH differ 11x due to
+  t_admixture vs t_split). Transitions from recombination rates. Parameters
+  have explicit biological interpretations. Scalable via PBWT-based sparse
+  haplotype matching (as demonstrated by SparsePainter for modern LAI).
+  Multi-source handled naturally by competing HMM states per archaic source.
+
+motivation: >
+  Existing tools ignore haplotype match length signal: HMMix/DAIseg use only
+  variant density (Poisson emission), discarding all LD structure. A coalescent-
+  theoretic haplotype matching model captures an 11x signal difference between
+  introgressed and non-introgressed positions. Li & Stephens framework has
+  never been applied to archaic introgression; SparsePainter showed PBWT-based
+  implementation scales to biobank size for modern LAI. This combination is
+  genuinely novel, expert-knowledge-driven, and fills the explicit gap stated
+  by Peede et al. 2025.
+
+target_contribution:
+  - primary: "Novel computational method/software for archaic introgression analysis (Li & Stephens extension)"
+  - secondary: "New biological discoveries about Denisovan/Neanderthal inheritance in modern humans, especially AMR"
+
+# ─── Phase 2 Validation (Problem Validation) ──────────────────────────────
+phase2_completed: true
+validated_research_question: >
+  Develop ArchaicPainter: a Li & Stephens haplotype matching method extended
+  to archaic reference genomes (Neanderthal + Denisovan), using coalescent-
+  theoretic emission probabilities (expected match length 58kb under
+  introgression vs 5kb under AMH ancestry — 11x signal difference ignored
+  by all existing tools). Multi-source HMM (AMH | NEA | DEN), validated on
+  msprime simulations with known ground truth, outperforming IBDmix/HMMix/
+  DAIseg on short introgressed segments (<50kb). Applied to 2,504 1000GP
+  individuals: genome-wide introgression atlas + analysis of admixed American
+  populations where complex background admixture confounds existing methods.
+  Open-source Python/C++ software. Ghost archaic deferred to version 2.
+
+project_intent:
+  primary: "Quality (principled, theoretically-grounded method) + Discovery (biology)"
+  secondary: "Engineering (open-source tool)"
+
+venue_target:
+  primary: "Genome Biology"
+  fallback: "Molecular Biology and Evolution"
+  stretch: "Nature Methods (if results are exceptional)"
+  rationale: >
+    Genome Biology accepts Type H (method + discovery); key differentiation
+    from Liang et al. 2025 is haplotype match length signal vs IBDmix variant
+    density. Must show: (1) synthetic benchmark superiority on short segments;
+    (2) complementary findings in AMR populations not detectable by IBDmix.
+
+deliberation_notes:
+  round1: >
+    Professor CONDITIONAL (theory derivation, baselines, AMR framing, scalability);
+    Editor CONDITIONAL (overlap with Liang 2025, synthetic benchmark, biological novelty);
+    Scientist CONDITIONAL (unphased archaic emission, PBWT scope, defer ghost, AMR two-phase).
+  round2: >
+    Scientist PASS (all technical conditions addressed);
+    Professor inferred PASS (all conditions addressed in refined question);
+    Editor inferred CONDITIONAL → acceptable with benchmarking plan.
+  convergence: "CONDITIONAL PASS — proceed with Phase 3 with noted conditions as method design requirements"
+
+# ─── Venue Candidates ─────────────────────────────────────────────
+venue_candidates:
+  - name: "Nature Methods"
+    type: "journal"
+    focus: "Breakthrough computational methods with clear biological utility"
+    impact_factor: ~48
+    note: "Highest bar; requires method to enable genuinely new biology"
+  - name: "Genome Biology"
+    type: "journal"
+    focus: "Genomics methods + discoveries"
+    impact_factor: ~12
+    note: "Good fit for Type H; accepts novel software tools + analysis"
+  - name: "Molecular Biology and Evolution"
+    type: "journal"
+    focus: "Evolution + population genetics"
+    impact_factor: ~11
+    note: "Strong fit for archaic introgression discovery papers"
+  - name: "PLOS Genetics"
+    type: "journal"
+    focus: "Population genetics, evolution"
+    impact_factor: ~4
+    note: "Lower bar but respected; good fallback"
+  - name: "Nucleic Acids Research (Web Server Issue)"
+    type: "journal"
+    focus: "Computational tools/databases"
+    impact_factor: ~14
+    note: "If software tool aspect is the primary contribution"
+
+# ─── Resources ────────────────────────────────────────────────────
+resources:
+  compute:
+    gpus: "8x NVIDIA L20 (46GB VRAM each = 368GB total GPU memory)"
+    cpus: "128 cores (Intel Xeon Platinum 8358P @ 2.60GHz)"
+    ram: "1 TB"
+    disk_free: "~367 GB"
+    note: "Sufficient for statistical haplotype matching and HMM inference at 1000GP scale"
+  data:
+    available:
+      - "1000 Genomes Project Phase 3 (2,504 individuals, 26 populations)"
+    to_download:
+      - "Altai Neanderthal genome (Prufer et al. 2014)"
+      - "Vindija 33.19 Neanderthal (Prufer et al. 2017)"
+      - "Chagyrskaya Neanderthal (Mafessoni et al. 2020)"
+      - "Altai Denisovan genome (Meyer et al. 2012 / Slon et al. 2017)"
+      - "Denisova 3 high-coverage (Chen et al. 2019)"
+      - "Allen Ancient DNA Resource (AADR) — modern + ancient panel"
+      - "Simons Genome Diversity Panel (SGDP) — 279 individuals"
+      - "Chimpanzee reference (outgroup)"
+    all_public: true
+  deadline: null
+  timeline_preference: "Efficient — avoid unnecessary delays"
+
+# ─── Confirmation ────────────────────────────────────────────────
+confirmed_by_user: true

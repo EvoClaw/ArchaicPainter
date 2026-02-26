@@ -1,0 +1,44 @@
+\section*{Conclusion}
+
+We have introduced ArchaicPainter (\AP{}), to our knowledge the first application
+of the Li \& Stephens haplotype copying model to archaic hominin introgression detection.
+By encoding coalescent match-length statistics in the emission and transition
+probabilities of a three-state HMM, \AP{} exploits an $\sim$11-fold
+coalescent tract-length contrast between introgressed and non-introgressed segments
+that all existing density-based approaches leave unexploited.
+Across 50 simulation replicates with known ground truth, this architectural
+choice translates into a $56\times$ F1 advantage over a Poisson density baseline,
+providing a controlled quantification of the discriminative value that
+haplotype match-length structure adds beyond variant counting.
+
+On real 1000~Genomes Project chromosome~21 data, \AP{} detects
+$\sim$2.1--2.3\% per-haplotype Neanderthal ancestry in European and East Asian
+populations at a median segment resolution of $\sim$90--113~kb, consistent
+with published genome-wide estimates.
+Functional annotation of detected regions recovers known adaptive introgression
+targets including the complete type-I and type-II interferon receptor gene cluster
+in an unsupervised manner, corroborating published evidence for adaptive retention
+of Neanderthal antiviral immunity haplotypes~\citep{dannemann2017contribution,
+enard2018human} and illustrating the method's ability
+to generate biologically interpretable output for downstream GWAS integration.
+
+The results motivate two conclusions for the field.
+First, haplotype match-length is a strong and previously underutilized signal
+for archaic introgression: methods designed to capture it --- whether through
+the LS framework or related approaches --- warrant serious development alongside
+existing density-based tools.
+Second, per-haplotype resolution, as opposed to per-individual diploid resolution,
+opens qualitatively new analyses: phased introgression catalogs can be directly
+connected to phased GWAS loci, enabling haplotype-level hypothesis testing about
+archaic allele contributions to complex traits that diploid-average methods cannot support.
+
+Limitations of the present work --- chromosome~21 analysis only, no direct
+benchmark against HMMix or DAIseg, proof-of-concept attribution for Denisovan
+ancestry --- are explicitly documented and define a concrete roadmap for
+follow-on work: genome-wide analysis, head-to-head benchmarking, integration of
+real Denisovan reference data, and SparsePainter-based scaling to biobank cohorts.
+\AP{} is released as open-source software at \url{https://github.com/placeholder/ArchaicPainter}
+with fully reproducible analysis pipelines.
+We anticipate that per-haplotype resolution archaic introgression maps,
+integrated with biobank-scale GWAS, will reveal new dimensions of how Neanderthal
+and Denisovan haplotypes shape human phenotypic diversity and disease risk today.

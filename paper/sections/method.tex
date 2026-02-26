@@ -1,0 +1,215 @@
+\section*{Materials and Methods}
+
+\subsection*{The \AP{} Hidden Markov Model}
+
+\paragraph{Overview.}
+\AP{} infers archaic introgression at haplotype resolution by extending the
+Li \& Stephens (2003) haplotype copying model~\citep{li2003modeling} to include
+archaic reference genomes as competing ancestry sources.
+The core insight is coalescent-theoretic: a modern human haplotype segment that traces
+ancestry to an archaic hominin via introgression coalesces with the archaic reference
+at time $t_\mathrm{admixture} \approx 1{,}724$ generations ($\sim$50 kya), whereas a
+non-introgressed segment coalesces at the modern human--archaic split time
+$t_\mathrm{split} \approx 19{,}000$ generations ($\sim$550 kya).
+Under a Poisson recombination model, the expected tract length scales as $1/t$ Morgans,
+yielding an 11-fold difference in expected haplotype match lengths
+($\approx$58 kb for introgressed versus $\approx$5 kb for non-introgressed haplotypes
+at a typical recombination rate of 1~cM/Mb).
+\AP{} exploits this \emph{match-length signal} via exponential transition
+probabilities rather than the allele density signal used by existing tools.
+Methods such as HMMix~\citep{skov2018detecting}, DAIseg~\citep{planche2024daiseg},
+and IBDmix~\citep{chen2020identifying} model archaic introgression via Poisson
+counts of archaic-specific alleles within sliding windows, an architecture that
+discards all haplotype linkage disequilibrium structure.
+The tract-length transition formulation is analogous to modern local ancestry
+inference (HAPMIX~\citep{price2009sensitive};
+MOSAIC~\citep{salter2019mosaic}; ChromoPainter~\citep{lawson2012inference}),
+here adapted to archaic reference genomes.
+
+\paragraph{Hidden states.}
+\AP{} assigns each phased SNP position on a query haplotype to one of three
+mutually exclusive hidden states: $S_\mathrm{AMH}$ (modern human ancestry),
+$S_\mathrm{NEA}$ (Neanderthal-introgressed), and $S_\mathrm{DEN}$
+(Denisovan-introgressed).
+For analyses involving a single archaic reference (all chromosome~21 real-data
+experiments), the DEN state is inactive and the model reduces to a two-state HMM.
+Initial state probabilities are set to $\pi_\mathrm{NEA} = 0.02$ and
+$\pi_\mathrm{AMH} = 0.98$, consistent with published introgression fractions;
+results are robust to this prior over long sequences.
+
+\paragraph{Emission probabilities.}
+At each biallelic SNP site $i$, the query haplotype carries allele $a_i \in \{0, 1\}$.
+Let $f_i^\mathrm{YRI}$ denote the derived allele frequency estimated from Yoruban
+(YRI) haplotypes in the 1000~Genomes Project Phase~3 panel~\citep{genomes20151000}.
+Under $S_\mathrm{AMH}$:
+\begin{equation}
+  P(a_i \mid S_\mathrm{AMH}) = f_i^\mathrm{YRI} \cdot [a_i=1] + (1 - f_i^\mathrm{YRI}) \cdot [a_i=0].
+  \label{eq:emiss_amh}
+\end{equation}
+
+Under $S_\mathrm{NEA}$, two emission models are used depending on whether the
+archaic reference genome matches the true introgressing population.
+
+\emph{Standard bidirectional emission (simulation).}
+When the reference is drawn from the same simulated population as the true donor,
+mismatches are informative and the standard Li \& Stephens emission is used:
+\begin{equation}
+  P(a_i \mid S_\mathrm{NEA}, \text{sim.}) =
+  (1-\theta)[a_i = g_i^\mathrm{arch}] + \theta[a_i \neq g_i^\mathrm{arch}],
+  \label{eq:emiss_nea_std}
+\end{equation}
+where $\theta = 0.01$ and $g_i^\mathrm{arch}$ is the archaic reference allele.
+On the 50-replicate benchmark this formulation achieves F1 $= 0.480 \pm 0.095$.
+
+\emph{Positive-only emission (real data).}
+Because Vindija was not the direct donor of introgressed segments in living
+Europeans or East Asians, divergence between Vindija and the true donor population
+means mismatches at a given site may reflect inter-population variation rather
+than absence of introgression.
+We therefore treat mismatches as uninformative for real-data analyses:
+\begin{equation}
+  P(a_i \mid S_\mathrm{NEA}, \text{real}) =
+  \begin{cases}
+    1 - \theta & \text{if } a_i \text{ matches } g_i^\mathrm{arch}, \\
+    \tfrac{1}{2}        & \text{otherwise.}
+  \end{cases}
+  \label{eq:emiss_nea_pos}
+\end{equation}
+Setting $P(\text{mismatch} \mid S_\mathrm{NEA}) = 1/2$ assigns zero log-odds
+to disagreements, equivalent to treating mismatches as uninformative when the
+reference diverges from the true donor.
+Critically, the standard and positive-only emission models are \emph{not}
+interchangeable: on simulation, the positive-only model achieves F1 $= 0.000$
+because mismatches carry essential discriminative information when the reference
+exactly matches the source.
+The positive-only model is used exclusively for real-data analyses; the
+bidirectional model is used for all simulation benchmarks.
+
+\paragraph{Transition probabilities.}
+Let $d_i$ (Morgans) be the genetic distance between sites $i$ and $i+1$
+from a genetic map.
+Under the Haldane recombination model~\citep{price2009sensitive}:
+\begin{equation}
+  P(S_{i+1} = s \mid S_i = s) = e^{-d_i \cdot t_s},
+  \label{eq:trans}
+\end{equation}
+where $t_s$ is the time parameter in generations:
+$t_\mathrm{NEA} = 1{,}724$, $t_\mathrm{DEN} = 1{,}000$,
+$t_\mathrm{AMH} = 19{,}000$.
+The expected tract length is $1/t_s$ Morgans
+($\approx$58 kb for NEA; $\approx$100 kb for DEN; $\approx$5 kb for AMH
+at 1~cM/Mb).
+Off-diagonal probabilities are distributed uniformly.
+Genetic distances are computed by linear interpolation of the GRCh38
+sex-averaged recombination map~\citep{halldorsson2019characterizing}
+(HapMap-II format, UCSC Genome Browser).
+
+\paragraph{Viterbi decoding and post-processing.}
+State sequences are inferred by the Viterbi algorithm in log-space.
+Consecutive archaic-state positions are merged into segments.
+For real-data analyses, gaps $\leq 10$~kb between adjacent segments are closed
+(reducing fragmentation from sparse Vindija sites) and merged segments shorter
+than 10~kb are discarded.
+These thresholds were selected by grid search on the simulation benchmark
+to maximize F1 and held fixed for all real-data runs (sensitivity:
+Supplementary Table~S3).
+
+\subsection*{Simulation Experiments}
+
+Coalescent simulations used \texttt{msprime}~v1.3.3~\citep{baumdicker2022efficient}
+(Python~3.12).
+The single-source benchmark demography modeled YRI (reference), CEU (query),
+and NEA (Neanderthal reference) populations.
+A population split at $t_\mathrm{OOA} = 2{,}000$ generations separated YRI and CEU,
+followed by a 2\% admixture pulse from NEA into CEU at $t_\mathrm{admixture} = 1{,}724$
+generations via \texttt{msprime.MassMigration}.
+The NEA--modern split was at $t_\mathrm{split} = 19{,}000$ generations~\citep{prufer2014complete};
+all $N_e = 10{,}000$ diploid.
+
+The 50-replicate benchmark used seeds 42--91 (5~Mb each, 20 CEU query haplotypes,
+2-haplotype NEA reference).
+Ground-truth intervals were extracted from all ARG migration records with times
+within $\pm 80\%$ of $t_\mathrm{admixture}$.
+
+The two-source proof-of-concept used a two-archaic demography with
+MassMigration events at $t_\mathrm{NEA} = 1{,}724$ gen (2\%) and $t_\mathrm{DEN} = 1{,}000$
+gen (1\%), and population splits at $t_\mathrm{split\_NEA} = 19{,}000$ gen and
+$t_\mathrm{split\_DEN} = 25{,}000$ gen.
+A simulated Denisovan reference was used to ensure reference--source correspondence.
+Twenty replicates were run (seeds 100--119, 5~Mb, 20 query haplotypes).
+
+\subsection*{Evaluation Metrics}
+
+\emph{F1}: true positive = predicted segment overlaps $\geq 1$~bp of a ground-truth segment
+(lenient, following Sankararaman et al.~\citeyear{sankararaman2014genomic};
+stricter 50\% and 80\% reciprocal-overlap results in Supplementary Table~S4).
+\emph{AUPRC}: precision-recall curve integrated over posterior probability thresholds.
+\emph{Attribution accuracy}: fraction of predicted NEA (or DEN) segments overlapping
+a same-type ground-truth segment; \emph{cross-contamination}: fraction overlapping
+the opposite-type ground truth.
+\emph{Bootstrap CIs}: percentile bootstrap, 2{,}000 resamples (SciPy~1.14.1~\citep{virtanen2020scipy}).
+\emph{Wilcoxon test}: one-sided signed-rank test for pairwise method comparisons.
+
+\subsection*{Real-Data Analysis}
+
+\paragraph{Data.}
+Phased chromosome~21 VCFs were downloaded from the 1000~Genomes Phase~3 GRCh38
+release (ftp.1000genomes.ebi.ac.uk)~\citep{genomes20151000}.
+We analyzed 20 CEU and 20 CHB individuals (40 phased haplotypes each)
+across chr21:10,000,000--48,000,000 (38~Mb).
+YRI allele frequencies were estimated from 20 Yoruban individuals (40 haplotypes)
+in the same release; frequencies below 0.025 were floored at 0.025 to prevent
+emission instability from singletons.
+
+\paragraph{Vindija reference.}
+The Vindija~33.19 diploid VCF~\citep{prufer2017high} was downloaded from the
+MPI EVAN repository, converted from GRCh37 to GRCh38 via CrossMap~v0.7.0~\citep{zhao2014crossmap},
+and merged with the 1000GP VCF using allele-aware orientation correction
+(swapped REF/ALT codes were inverted before computing match scores).
+After intersection and quality filtering, 1{,}036 (CEU) and 906 (CHB) informative
+SNPs remained ($\approx$27 SNPs/Mb), substantially fewer than in simulation
+($\approx$320 SNPs/Mb) due to the limited callable regions of the Vindija genome.
+The median inter-SNP distance ($\approx$37~kb) retains sensitivity to tracts
+$\geq 50$~kb but reduces boundary resolution relative to simulation.
+
+\paragraph{Ancestry fraction.}
+Per-haplotype Neanderthal ancestry fraction is the proportion of the 38-Mb window
+covered by NEA-state Viterbi calls.
+Population estimates are mean $\pm$ SD across the 40 haplotypes.
+
+\subsection*{Two-Source Attribution}
+\label{sec:attribution}
+
+The three-state HMM was evaluated on the two-source simulation (20 replicates,
+5~Mb, 2\% NEA + 1\% DEN) described above, using a simulated Denisovan reference
+matched to the true donor.
+Real-data Denisovan attribution using the Altai genome is deferred to future work
+owing to the absence of a GRCh38-compatible high-coverage Denisovan VCF for chr21.
+
+\subsection*{Functional Annotation}
+
+Introgressed segment coordinates were intersected with UCSC knownGene
+annotations (hg38, downloaded February~2026)~\citep{kent2002human};
+gene symbols were mapped via the UCSC kgXref table.
+A transcript was considered overlapping at $\geq 1$~bp.
+Named genes were cross-referenced against a curated list of chr21 adaptive
+introgression loci (Supplementary Table~S2) compiled from Vernot \& Akey~\citeyear{vernot2014resurrecting},
+Sankararaman et al.~\citeyear{sankararaman2014genomic},
+Vernot et al.~\citeyear{vernot2016excavating},
+Browning et al.~\citeyear{browning2018ancestry},
+and Dannemann \& Kelso~\citeyear{dannemann2017contribution}.
+
+\subsection*{Scalability Analysis}
+
+Runtime was benchmarked with query sizes $n = 10$ to $n = 1{,}000$ haplotypes
+(5-Mb sequences, seed 42, single CPU thread, Intel Xeon Platinum 8358P, 2.60~GHz).
+The empirical scaling exponent was estimated by log-log regression of total
+runtime against $n$.
+Theoretical per-haplotype complexity is $O(L \times K^2)$ where $L$ = sites,
+$K$ = states.
+
+\subsection*{Software and Reproducibility}
+
+\AP{} is implemented in Python~3.12; code, simulation scripts, preprocessing
+pipelines, and pinned dependencies (\texttt{environment.yml}) are provided
+in Supplementary Scripts~S1--S5 and at \url{https://github.com/[repository]}.

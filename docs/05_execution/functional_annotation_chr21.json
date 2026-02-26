@@ -1,0 +1,1083 @@
+{
+  "summary": {
+    "ceu_segments": 228,
+    "chb_segments": 251,
+    "union_merged_regions": 40,
+    "total_introgressed_bp": 10737559,
+    "median_region_kb": 143.451
+  },
+  "genes_in_introgressed_regions": {
+    "ceu_named": [
+      "LIPI",
+      "RBM11",
+      "HSPA13",
+      "CHODL",
+      "TMPRSS15",
+      "GRIK1",
+      "GRIK1-AS1",
+      "CLDN17",
+      "TIAM1",
+      "SOD1",
+      "SCAF4",
+      "HUNK",
+      "MIS18A",
+      "MRAP",
+      "IFNAR2",
+      "IL10RB",
+      "IFNAR1",
+      "IFNGR2",
+      "DNAJC28",
+      "GART",
+      "SON",
+      "DOP1B",
+      "DYRK1A",
+      "DSCR4",
+      "DSCAM",
+      "BACE2",
+      "RIPK4",
+      "PRDM15",
+      "C2CD2",
+      "ZBTB21",
+      "UMODL1",
+      "UMODL1-AS1",
+      "ABCG1",
+      "TFF3",
+      "TFF2",
+      "TFF1",
+      "TMPRSS3",
+      "UBASH3A",
+      "RSPH1",
+      "SLC37A1",
+      "PDE9A",
+      "WDR4",
+      "NDUFV3",
+      "PKNOX1",
+      "SUMO3",
+      "PCBP3",
+      "COL6A2",
+      "FTCD",
+      "SPATC1L",
+      "LSS",
+      "MCM3AP",
+      "YBEY",
+      "C21orf58",
+      "PCNT",
+      "ANKRD20A18P",
+      "RNA5SP488",
+      "FBXW11P1",
+      "SRSF9P1"
+    ],
+    "chb_named": [
+      "LIPI",
+      "HSPA13",
+      "NRIP1",
+      "CXADR",
+      "C21orf91",
+      "CHODL",
+      "ADAMTS1",
+      "ADAMTS5",
+      "KRTAP19-8",
+      "TIAM1",
+      "HUNK",
+      "MRAP",
+      "URB1",
+      "IFNAR2",
+      "IL10RB",
+      "DNAJC28",
+      "GART",
+      "SON",
+      "ATP5PO",
+      "RCAN1",
+      "RUNX1",
+      "SETD4",
+      "CBR1",
+      "CBR3",
+      "DOP1B",
+      "DSCR4",
+      "B3GALT5",
+      "FAM3B",
+      "TSPEAR",
+      "KRTAP10-4",
+      "KRTAP10-5",
+      "PTTG1IP",
+      "RHOT1P2",
+      "ANKRD20A18P",
+      "RNA5SP488",
+      "RIMKLBP1"
+    ],
+    "union_named": [
+      "ABCG1",
+      "ADAMTS1",
+      "ADAMTS5",
+      "ANKRD20A18P",
+      "ATP5PO",
+      "B3GALT5",
+      "BACE2",
+      "C21orf58",
+      "C21orf91",
+      "C2CD2",
+      "CBR1",
+      "CBR3",
+      "CHODL",
+      "CLDN17",
+      "COL6A2",
+      "CXADR",
+      "DNAJC28",
+      "DOP1B",
+      "DSCAM",
+      "DSCR4",
+      "DYRK1A",
+      "FAM3B",
+      "FBXW11P1",
+      "FTCD",
+      "GART",
+      "GRIK1",
+      "GRIK1-AS1",
+      "HSPA13",
+      "HUNK",
+      "IFNAR1",
+      "IFNAR2",
+      "IFNGR2",
+      "IL10RB",
+      "KRTAP10-4",
+      "KRTAP10-5",
+      "KRTAP19-8",
+      "LIPI",
+      "LSS",
+      "MCM3AP",
+      "MIS18A",
+      "MRAP",
+      "NDUFV3",
+      "NRIP1",
+      "PCBP3",
+      "PCNT",
+      "PDE9A",
+      "PKNOX1",
+      "PRDM15",
+      "PTTG1IP",
+      "RBM11",
+      "RCAN1",
+      "RHOT1P2",
+      "RIMKLBP1",
+      "RIPK4",
+      "RNA5SP488",
+      "RSPH1",
+      "RUNX1",
+      "SCAF4",
+      "SETD4",
+      "SLC37A1",
+      "SOD1",
+      "SON",
+      "SPATC1L",
+      "SRSF9P1",
+      "SUMO3",
+      "TFF1",
+      "TFF2",
+      "TFF3",
+      "TIAM1",
+      "TMPRSS15",
+      "TMPRSS3",
+      "TSPEAR",
+      "UBASH3A",
+      "UMODL1",
+      "UMODL1-AS1",
+      "URB1",
+      "WDR4",
+      "YBEY",
+      "ZBTB21"
+    ]
+  },
+  "adaptive_introgression_hits": {
+    "detected_genes": [
+      "DYRK1A",
+      "RUNX1",
+      "B3GALT5",
+      "CXADR",
+      "PTTG1IP",
+      "NRIP1",
+      "LIPI"
+    ],
+    "recall_pct": 43.8,
+    "shared_ceu_chb": [
+      "LIPI"
+    ],
+    "ceu_only": [
+      "DYRK1A"
+    ],
+    "chb_only": [
+      "RUNX1",
+      "B3GALT5",
+      "CXADR",
+      "PTTG1IP",
+      "NRIP1"
+    ],
+    "details": {
+      "DYRK1A": {
+        "trait": "Brain development; autism; Down syndrome",
+        "evidence": "NEA-derived regulatory variants in non-Africans",
+        "refs": "Vernot & Akey 2014; Enard & Petrov 2018",
+        "category": "neurodevelopment",
+        "ceu": true,
+        "chb": false
+      },
+      "RUNX1": {
+        "trait": "Platelet count; hematopoiesis; leukemia risk",
+        "evidence": "NEA variant associated with platelet traits in GWAS",
+        "refs": "Chen et al. 2020 AJHG; Browning et al. 2018",
+        "category": "hematopoiesis",
+        "ceu": false,
+        "chb": true
+      },
+      "B3GALT5": {
+        "trait": "Blood group antigens; sialylation",
+        "evidence": "NEA-derived variant at significant frequency",
+        "refs": "Vernot & Akey 2014 Science",
+        "category": "immunity/glycobiology",
+        "ceu": false,
+        "chb": true
+      },
+      "CXADR": {
+        "trait": "Coxsackievirus A receptor; cardiac inflammation",
+        "evidence": "Archaic haplotype near CXADR in East Asians",
+        "refs": "Dannemann et al. 2017 AJHG",
+        "category": "immunity/cardiac",
+        "ceu": false,
+        "chb": true
+      },
+      "PTTG1IP": {
+        "trait": "Thyroid function; pituitary tumor transforming",
+        "evidence": "NEA-derived region in European populations",
+        "refs": "Sankararaman et al. 2014",
+        "category": "endocrine",
+        "ceu": false,
+        "chb": true
+      },
+      "NRIP1": {
+        "trait": "Estrogen receptor interaction; metabolic function",
+        "evidence": "Archaic haplotype with regulatory effects",
+        "refs": "Browning et al. 2018",
+        "category": "metabolism/endocrine",
+        "ceu": false,
+        "chb": true
+      },
+      "LIPI": {
+        "trait": "Lipid metabolism; triglyceride hydrolysis",
+        "evidence": "Archaic segment at LIPI locus",
+        "refs": "Browning et al. 2018",
+        "category": "metabolism",
+        "ceu": true,
+        "chb": true
+      }
+    }
+  },
+  "trait_categories": {
+    "neurodevelopment": [
+      "DYRK1A"
+    ],
+    "hematopoiesis": [
+      "RUNX1"
+    ],
+    "immunity/glycobiology": [
+      "B3GALT5"
+    ],
+    "immunity/cardiac": [
+      "CXADR"
+    ],
+    "endocrine": [
+      "PTTG1IP"
+    ],
+    "metabolism/endocrine": [
+      "NRIP1"
+    ],
+    "metabolism": [
+      "LIPI"
+    ]
+  },
+  "novel_named_genes": [
+    "RBM11",
+    "HSPA13",
+    "C21orf91",
+    "CHODL",
+    "TMPRSS15",
+    "ADAMTS1",
+    "ADAMTS5",
+    "GRIK1",
+    "GRIK1-AS1",
+    "CLDN17",
+    "KRTAP19-8",
+    "TIAM1",
+    "SOD1",
+    "SCAF4",
+    "HUNK",
+    "MIS18A",
+    "MRAP",
+    "URB1",
+    "IFNAR2",
+    "IL10RB",
+    "IFNAR1",
+    "IFNGR2",
+    "DNAJC28",
+    "GART",
+    "SON",
+    "ATP5PO",
+    "RCAN1",
+    "SETD4",
+    "CBR1",
+    "CBR3",
+    "DOP1B",
+    "DSCR4",
+    "DSCAM",
+    "BACE2",
+    "FAM3B",
+    "RIPK4",
+    "PRDM15",
+    "C2CD2",
+    "ZBTB21",
+    "UMODL1",
+    "UMODL1-AS1",
+    "ABCG1",
+    "TFF3",
+    "TFF2",
+    "TFF1",
+    "TMPRSS3",
+    "UBASH3A",
+    "RSPH1",
+    "SLC37A1",
+    "PDE9A",
+    "WDR4",
+    "NDUFV3",
+    "PKNOX1",
+    "TSPEAR",
+    "KRTAP10-4",
+    "KRTAP10-5",
+    "SUMO3",
+    "PCBP3",
+    "COL6A2",
+    "FTCD",
+    "SPATC1L",
+    "LSS",
+    "MCM3AP",
+    "YBEY",
+    "C21orf58",
+    "PCNT",
+    "RHOT1P2",
+    "ANKRD20A18P",
+    "RNA5SP488",
+    "FBXW11P1",
+    "RIMKLBP1",
+    "SRSF9P1"
+  ],
+  "gene_details": [
+    {
+      "gene": "LIPI",
+      "start": 14108812,
+      "end": 14206949,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": true,
+      "known_trait": "Lipid metabolism; triglyceride hydrolysis"
+    },
+    {
+      "gene": "RBM11",
+      "start": 14216156,
+      "end": 14228372,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "HSPA13",
+      "start": 14371114,
+      "end": 14383146,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "NRIP1",
+      "start": 14961234,
+      "end": 15064934,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": true,
+      "known_trait": "Estrogen receptor interaction; metabolic function"
+    },
+    {
+      "gene": "CXADR",
+      "start": 17513042,
+      "end": 17570100,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": true,
+      "known_trait": "Coxsackievirus A receptor; cardiac inflammation"
+    },
+    {
+      "gene": "C21orf91",
+      "start": 17788973,
+      "end": 17819356,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "CHODL",
+      "start": 17901262,
+      "end": 18267373,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TMPRSS15",
+      "start": 18269115,
+      "end": 18403785,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ADAMTS1",
+      "start": 26835754,
+      "end": 26845409,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ADAMTS5",
+      "start": 26917921,
+      "end": 26967088,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "GRIK1",
+      "start": 29536932,
+      "end": 29939625,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "GRIK1-AS1",
+      "start": 29748937,
+      "end": 29764002,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "CLDN17",
+      "start": 30165564,
+      "end": 30166805,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "KRTAP19-8",
+      "start": 31038158,
+      "end": 31038476,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TIAM1",
+      "start": 31118415,
+      "end": 31558977,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SOD1",
+      "start": 31659665,
+      "end": 31668931,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SCAF4",
+      "start": 31670999,
+      "end": 31732118,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "HUNK",
+      "start": 31873019,
+      "end": 32004064,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "MIS18A",
+      "start": 32268227,
+      "end": 32279049,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "MRAP",
+      "start": 32291812,
+      "end": 32312290,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "URB1",
+      "start": 32311017,
+      "end": 32393012,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "IFNAR2",
+      "start": 33229900,
+      "end": 33262756,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "IL10RB",
+      "start": 33266366,
+      "end": 33297221,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "IFNAR1",
+      "start": 33324969,
+      "end": 33359864,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "IFNGR2",
+      "start": 33403412,
+      "end": 33437516,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "DNAJC28",
+      "start": 33488054,
+      "end": 33491716,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "GART",
+      "start": 33503930,
+      "end": 33542842,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SON",
+      "start": 33543037,
+      "end": 33577481,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ATP5PO",
+      "start": 33903452,
+      "end": 33915804,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RCAN1",
+      "start": 34516441,
+      "end": 34615113,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RUNX1",
+      "start": 34787800,
+      "end": 34888690,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": true,
+      "known_trait": "Platelet count; hematopoiesis; leukemia risk"
+    },
+    {
+      "gene": "SETD4",
+      "start": 36034540,
+      "end": 36060261,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "CBR1",
+      "start": 36070023,
+      "end": 36073164,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "CBR3",
+      "start": 36135078,
+      "end": 36146562,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "DOP1B",
+      "start": 36164534,
+      "end": 36294274,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "DYRK1A",
+      "start": 37367556,
+      "end": 37515377,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": true,
+      "known_trait": "Brain development; autism; Down syndrome"
+    },
+    {
+      "gene": "DSCR4",
+      "start": 37951424,
+      "end": 38121339,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "B3GALT5",
+      "start": 39556441,
+      "end": 39673137,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": true,
+      "known_trait": "Blood group antigens; sialylation"
+    },
+    {
+      "gene": "DSCAM",
+      "start": 40010998,
+      "end": 40847158,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "BACE2",
+      "start": 41167800,
+      "end": 41276597,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "FAM3B",
+      "start": 41316800,
+      "end": 41357727,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RIPK4",
+      "start": 41739368,
+      "end": 41767089,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "PRDM15",
+      "start": 41798224,
+      "end": 41879344,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "C2CD2",
+      "start": 41885111,
+      "end": 41926690,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ZBTB21",
+      "start": 41986830,
+      "end": 42010357,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "UMODL1",
+      "start": 42062958,
+      "end": 42142995,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "UMODL1-AS1",
+      "start": 42102133,
+      "end": 42108534,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ABCG1",
+      "start": 42199688,
+      "end": 42297244,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TFF3",
+      "start": 42312052,
+      "end": 42315336,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TFF2",
+      "start": 42346356,
+      "end": 42350994,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TFF1",
+      "start": 42362281,
+      "end": 42366535,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TMPRSS3",
+      "start": 42371889,
+      "end": 42395943,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "UBASH3A",
+      "start": 42403861,
+      "end": 42447243,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RSPH1",
+      "start": 42472485,
+      "end": 42496224,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SLC37A1",
+      "start": 42499631,
+      "end": 42581440,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "PDE9A",
+      "start": 42653620,
+      "end": 42775509,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "WDR4",
+      "start": 42843093,
+      "end": 42879531,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "NDUFV3",
+      "start": 42893267,
+      "end": 42913304,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "PKNOX1",
+      "start": 42974561,
+      "end": 43033931,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "TSPEAR",
+      "start": 44497892,
+      "end": 44711572,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "KRTAP10-4",
+      "start": 44573728,
+      "end": 44575371,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "KRTAP10-5",
+      "start": 44579454,
+      "end": 44580604,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SUMO3",
+      "start": 44805616,
+      "end": 44818051,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "PTTG1IP",
+      "start": 44849584,
+      "end": 44873709,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": true,
+      "known_trait": "Thyroid function; pituitary tumor transforming"
+    },
+    {
+      "gene": "PCBP3",
+      "start": 45643693,
+      "end": 45942454,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "COL6A2",
+      "start": 46098111,
+      "end": 46129801,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "FTCD",
+      "start": 46136261,
+      "end": 46155567,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SPATC1L",
+      "start": 46161147,
+      "end": 46184476,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "LSS",
+      "start": 46188140,
+      "end": 46228822,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "MCM3AP",
+      "start": 46235132,
+      "end": 46285611,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "YBEY",
+      "start": 46286341,
+      "end": 46297751,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "C21orf58",
+      "start": 46300429,
+      "end": 46320825,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "PCNT",
+      "start": 46324155,
+      "end": 46445769,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RHOT1P2",
+      "start": 13936992,
+      "end": 13937325,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "ANKRD20A18P",
+      "start": 14064324,
+      "end": 14069087,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RNA5SP488",
+      "start": 14070870,
+      "end": 14070986,
+      "class": "protein_coding_or_named",
+      "pop": "both",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "FBXW11P1",
+      "start": 31627126,
+      "end": 31628600,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "RIMKLBP1",
+      "start": 36050213,
+      "end": 36051377,
+      "class": "protein_coding_or_named",
+      "pop": "CHB",
+      "in_ai_literature": false,
+      "known_trait": null
+    },
+    {
+      "gene": "SRSF9P1",
+      "start": 36295172,
+      "end": 36295702,
+      "class": "protein_coding_or_named",
+      "pop": "CEU",
+      "in_ai_literature": false,
+      "known_trait": null
+    }
+  ]
+}

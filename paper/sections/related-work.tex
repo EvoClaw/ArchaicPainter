@@ -1,0 +1,149 @@
+\section*{Related Work}
+
+\subsection*{Archaic introgression detection: allele-frequency and density-based methods}
+
+The detection of archaic hominin introgression in modern human genomes was first
+made possible by comparative analysis of the initial Neanderthal and Denisovan
+genome sequences~\citep{green2010draft, reich2010genetic}.
+Early methods identified introgressed segments by searching for genomic regions
+in non-African populations that showed excess similarity to the archaic genome,
+quantified through D-statistics (ABBA-BABA tests) or derived allele sharing
+frequency~\citep{patterson2012ancient, durand2011testing, green2010draft}.
+While powerful for genome-wide proportion estimation, these population-level statistics
+do not localize introgressed segments in individual genomes.
+
+The first generation of segment-level methods took a density-based approach.
+Vernot \& Akey~\citeyear{vernot2014resurrecting} used a conditional random field
+that combined archaic allele density, linkage disequilibrium, and population
+differentiation to map Neanderthal segments in European genomes; their method
+identified $\sim$20~Gb of Neanderthal-derived sequence across the European
+population.
+Sankararaman et al.~\citeyear{sankararaman2014genomic} independently developed
+a two-state HMM in which each window is classified as introgressed or not
+based on the density of archaic-like alleles relative to a background model
+calibrated from African genomes.
+Both methods operationalize the same core statistical signal: the local excess of
+archaic allele matches over a background expectation.
+Neither explicitly models the spatial autocorrelation of archaic matches along
+the haplotype.
+
+IBDmix~\citep{chen2020identifying} reformulated the problem as identity-by-descent
+detection between a query individual and the archaic genome, using a LOD score
+at each site and a simple HMM to call IBD segments.
+IBDmix was designed for sensitivity at the diploid-individual level and has
+been widely used for large-scale population surveys (e.g., the HGDP--1000GP
+combined dataset~\citep{browning2018ancestry}).
+Its site-level LOD accumulation is equivalent to a Poisson approximation in the
+number of matching sites, making it conceptually aligned with the Poisson density
+principle our baseline captures.
+Across this spectrum, the unifying signal remains the local excess of archaic
+allele matches --- the density principle --- rather than the spatial structure
+of haplotype matches that coalescent theory predicts to differ sharply between
+introgressed and non-introgressed tracts.
+
+\subsection*{HMM-based density methods: HMMix and DAIseg}
+
+HMMix~\citep{skov2018detecting} represents the current state of the art in
+HMM-based archaic introgression detection.
+It uses a two-state HMM (introgressed vs.\ non-introgressed) with Poisson-distributed
+emission probabilities for the count of archaic-diagnostic SNPs per window.
+The transition matrix encodes the expected tract length through a geometrically
+distributed segment length prior.
+HMMix was used to produce the most comprehensive published archaic introgression
+catalog in non-African populations, covering all major population groups.
+
+DAIseg~\citep{planche2024daiseg} (Planche et al.\ 2024) extended HMMix to a three-state model (AMH/NEA/DEN),
+enabling simultaneous detection of both archaic ancestry sources.
+Like HMMix, DAIseg uses Poisson-distributed emissions at the site level.
+The key structural difference from \AP{} is that both HMMix and DAIseg count
+the number of archaic-diagnostic variants within a window and model this count
+as Poisson-distributed, rather than modeling the per-site match probability
+conditioned on a haplotype state.
+This means neither method leverages the spatial match-length signal that
+differentiates introgressed from non-introgressed haplotypes under the coalescent.
+\AP{} is structurally closest to DAIseg in having three states and supporting
+simultaneous NEA and DEN attribution, but differs fundamentally in its emission
+model: where DAIseg counts variants per window, \AP{} computes a per-site
+match probability using coalescent-theoretic parameters, explicitly encoding
+the expected haplotype match length in the transition matrix.
+
+\subsection*{Haplotype-based approaches: S'PRIME, ArchIE, and local ancestry inference}
+
+Several methods have used haplotype or LD structure for archaic introgression
+without adopting the Li \& Stephens framework.
+S'PRIME~\citep{browning2018ancestry} identifies candidate introgressed segments
+as regions with elevated frequency of derived alleles absent from African
+genomes, combined with LD-based selection to maximize the number of candidate
+introgressed SNPs in each putative segment.
+While LD-aware, S'PRIME uses LD as a segment-extension heuristic rather than
+as an explicit emission model.
+
+ArchIE~\citep{durvasula2019statistical} uses a logistic regression classifier trained on
+haplotype summary statistics (including match-length-related features) to classify
+genomic windows as introgressed or not.
+ArchIE demonstrated that haplotype features improve detection accuracy over
+site-frequency features alone, directly motivating the present work.
+However, its machine learning framework requires simulated training data, and
+Peede et al.~\citeyear{peede2025review} showed that such simulation-trained
+methods are sensitive to demographic misspecification when the training
+demography departs from the true history.
+\AP{} avoids this dependence by deriving its parameters from coalescent theory
+directly, requiring only published admixture time estimates rather than
+simulation-tuned weights.
+
+The Li \& Stephens (LS) model~\citep{li2003modeling} is the theoretical backbone
+of modern local ancestry inference (LAI).
+In the LS framework, a query haplotype is modeled as an imperfect mosaic of
+reference panel haplotypes; the HMM state at each site tracks which reference
+haplotype is currently being ``copied'', with transitions governed by recombination
+distance.
+ChromoPainter~\citep{lawson2012inference} applies the LS model to population
+structure and admixture inference, and MOSAIC~\citep{salter2019mosaic} extends
+it to multi-way admixture mapping in admixed populations.
+SparsePainter~\citep{yang2025sparsepainter} achieves scalability to biobank-size
+cohorts through PBWT-based sparse haplotype matching.
+\AP{} translates this established LAI architecture to the archaic reference
+setting, replacing the modern reference panel with the Vindija or Altai archaic
+genomes and reparameterizing the emission model for the coalescent depth of
+archaic divergence.
+
+\subsection*{Functional and adaptive significance of introgressed segments}
+
+Genome-wide introgression maps have enabled systematic functional analysis.
+These analyses depend on accurate, per-haplotype introgressed segment maps:
+methods that mislocalize or miss short tracts may misattribute the source
+of functional enrichment.
+Genome-wide analyses have revealed Neanderthal allele enrichment in keratin and
+immune pathways and depletion near promoters~\citep{sankararaman2016combined},
+population-specific metabolic and neurological pathway enrichment in East Asian
+and South Asian populations~\citep{vernot2016excavating}, phenotypic associations
+in the UK Biobank~\citep{dannemann2017contribution}, and altered transcript levels
+in immune cells for Neanderthal haplotypes at immune
+gene loci~\citep{mccoy2017impacts}.
+Enard \& Petrov~\citeyear{enard2018human} demonstrated global excess of archaic
+introgression near antiviral immune genes, arguing for adaptive retention of
+archaic viral defense alleles following exposure to Eurasian pathogens.
+The functional annotation results of the present work --- the unsupervised
+recovery of the interferon receptor gene cluster in CEU haplotypes --- provide
+independent corroboration of this adaptive retention hypothesis and demonstrate
+that \AP{}'s match-length signal is specific enough to locate these loci
+without annotation input.
+
+\subsection*{Ancient DNA and reference genome quality}
+
+A challenge shared across all archaic introgression methods is the quality and
+representativeness of the available archaic reference genomes.
+The high-coverage Vindija 33.19 Neanderthal
+genome~\citep{prufer2014complete, prufer2017high} is the best available
+Neanderthal reference, but represents a single individual from one
+geographic locality and time point.
+The Altai Denisovan~\citep{meyer2012high} similarly represents a single
+individual.
+Ref genome bias, post-mortem DNA damage, and mapping artifacts can introduce
+systematic errors in any method that compares modern and archaic sequences.
+\AP{} addresses the reference-divergence problem via the positive-only emission
+mode, which allows for uncertainty in whether a specific site in the reference
+reflects the true introgressing allele.
+This design choice is consistent with approaches in ancient DNA analysis that
+use asymmetric likelihood functions to handle deamination-induced
+transitions~\citep{jonsson2013mapdamage}.

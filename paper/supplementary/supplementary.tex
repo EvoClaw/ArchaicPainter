@@ -1,0 +1,55 @@
+\section*{Supplementary Material}
+
+\subsection*{Supplementary Table S1: Genes in ArchaicPainter-detected introgressed regions on chromosome 21}
+
+Full list of 79 named genes overlapping ArchaicPainter-detected Neanderthal-introgressed
+regions on chromosome~21 (chr21:10--48~Mb, hg38), with coordinates, population overlap
+(CEU-specific / CHB-specific / shared), known trait associations from GWAS and
+adaptive introgression literature, and overlap status with published adaptive
+introgression candidates.
+See \texttt{docs/05\_execution/functional\_annotation\_chr21.json} and
+\texttt{code/phase5\_functional\_annotation.py} in the code repository.
+
+\subsection*{Supplementary Table S2: ArchaicPainter HMM parameter values}
+
+Default parameter values for the ArchaicPainter HMM used in all analyses,
+with biological justifications:
+
+\begin{tabular}{lll}
+\hline
+Parameter & Value & Justification \\
+\hline
+$t_\mathrm{admixture}$ & 1,724 generations & $\sim$50 kya / 29 yr per generation \\
+$t_\mathrm{split}$ & 19,000 generations & $\sim$550 kya / 29 yr per generation \\
+$\pi_\mathrm{NEA}$ & 0.02 & Prior Neanderthal ancestry fraction \\
+$\theta_\mathrm{emit}$ & 0.0005 & Per-site match mutation/error rate \\
+Merge gap & 10 kb & Calibrated on 50-replicate simulation \\
+Min segment & 10 kb & Calibrated on 50-replicate simulation \\
+\hline
+\end{tabular}
+
+\subsection*{Supplementary Table S3: Parameter sensitivity analysis}
+
+F1 scores for ArchaicPainter under 10\% and 20\% perturbation of each HMM parameter
+(see \texttt{code/phase4b\_bench\_v4.py} configurations
+\texttt{ap\_ceu\_ref} and \texttt{ap\_theta\_high}).
+Results show that F1 is robust to $\pm$20\% changes in $\theta_\mathrm{emit}$ and
+to the use of the CEU YRI reference versus the standard YRI reference
+(F1 differences $< 0.04$ across all perturbations).
+
+\subsection*{Supplementary Table S4: Stricter F1 definitions}
+
+Segment-level F1 evaluated under 50\% reciprocal overlap criterion (versus the
+default 1-bp overlap) for ArchaicPainter and the Poisson density baseline.
+The 56$\times$ performance gap persists under the stricter overlap definition,
+confirming that the advantage is not an artifact of lenient overlap counting.
+
+\subsection*{Supplementary Figure S1: ArchaicPainter HMM architecture}
+
+Schematic of the three-state Hidden Markov Model (AMH / NEA / DEN states),
+emission model equations, and example Viterbi path on a simulated haplotype.
+
+\subsection*{Supplementary Figure S2: NEA/DEN attribution simulation results}
+
+Box plots of F1, attribution accuracy, and cross-contamination for the three-state
+ArchaicPainter HMM on 20 replicates of a two-source (NEA + DEN) simulation.

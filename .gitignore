@@ -1,0 +1,46 @@
+# Large genomic data files
+1000GP/
+*.vcf
+*.vcf.gz
+*.bcf
+*.bcf.csi
+*.bam
+*.bam.bai
+*.cram
+*.frq
+*.bed.gz
+*.bed.tbi
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.toc
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/sections/*.aux
+paper/supplementary/*.aux
+
+# Large data files
+data/
+*.gz
+*.tar
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+/tmp/
+*.tmp

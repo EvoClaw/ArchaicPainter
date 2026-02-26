@@ -1,0 +1,101 @@
+# Evaluation Protocol — ArchaicPainter
+# Phase 3 / M-Step 1
+# Status: DRAFT — not yet locked
+# locked: false
+
+claims:
+  - id: C1
+    claim: "ArchaicPainter achieves higher precision/recall than IBDmix, HMMix, DAIseg for short segments (<50kb) on simulation benchmarks"
+    evaluation: "msprime simulation benchmark"
+  - id: C2
+    claim: "ArchaicPainter correctly attributes NEA vs DEN at population level"
+    evaluation: "Simulation with source-labeled introgression + real data"
+  - id: C3
+    claim: "ArchaicPainter scales to 2504 whole-genome individuals (< 1 cpu-day/individual)"
+    evaluation: "Runtime benchmark on chr21, then all autosomes"
+  - id: C4
+    claim: "ArchaicPainter reveals AMR archaic ancestry patterns not detectable by IBDmix"
+    evaluation: "Real data comparison + RFMix2 sensitivity analysis"
+
+primary_metrics:
+  - name: "Segment-level F1 score"
+    what: "F1 at 50% reciprocal overlap threshold, per simulation replicate"
+    why: "Core detection quality; captures precision and recall jointly"
+    split_by: ["segment length bin: <50kb, 50-100kb, 100-200kb, >200kb"]
+  - name: "AUPRC"
+    what: "Area under precision-recall curve across detection thresholds"
+    why: "Threshold-independent; informative for rare segment detection"
+  - name: "FDR at 5% fixed recall"
+    what: "False discovery rate when calibrated to 95% recall"
+    why: "Practical metric for downstream functional analysis"
+  - name: "Multi-source attribution accuracy"
+    what: "% introgressed segments correctly attributed NEA vs DEN at population level"
+    why: "Tests multi-source HMM hypothesis"
+
+secondary_metrics:
+  - "Runtime (cpu-hours per 1000 haplotypes per chromosome)"
+  - "Memory peak (GB) per chromosome"
+  - "Archaic ancestry fraction (should recover ~2% for non-AFR populations)"
+
+simulation_protocol:
+  simulator: "msprime v1.x + stdpopsim demographic model"
+  demographic_model: "HomSap/OutOfAfricaArchaicAdmixture_5R19 (Ragsdale et al. 2019)"
+  parameters:
+    admixture_proportion: [0.01, 0.02, 0.04]
+    admixture_time_ya: 50000
+    archaic_split_time_ya: 550000
+    populations: ["YRI (outgroup)", "CEU (NEA-recipient)", "CHB (NEA-recipient)", "PEL (NEA+DEN)"]
+  n_replicates: 100
+  seeds: [42, 123, 456, 789, 1024, 2048, 4096, 8192, 16384, 32768]
+  output: "VCF + ground_truth_bed (chr, start, end, source_label)"
+
+statistical_reporting:
+  format: "mean +/- std across 100 replicates"
+  ci: "95% bootstrap CI (1000 bootstrap samples)"
+  significance: "Wilcoxon signed-rank test vs each baseline (paired, same seeds)"
+  correction: "Bonferroni for n_baselines comparisons"
+
+real_data_protocol:
+  dataset: "1000GP Phase 3 GRCh38 phased VCFs (2504 individuals, 26 populations)"
+  archaic_references:
+    - "Altai Neanderthal (Prufer et al. 2014)"
+    - "Vindija 33.19 Neanderthal (Prufer et al. 2017)"
+    - "Chagyrskaya Neanderthal (Mafessoni et al. 2020)"
+    - "Altai Denisovan high-coverage (Chen et al. 2019)"
+  genetic_map: "HapMap Phase II GRCh38 liftover"
+  comparison: "overlap with IBDmix calls from Liang et al. 2025"
+
+baselines:
+  - name: "IBDmix"
+    citation: "Chen et al. 2020, Cell 179(6)"
+    source: "official_repo"
+    repo: "https://github.com/PrincetonUniversity/ibdmix"
+    type: "must_include"
+    note: "Reference-free IBD-based; used in Liang 2025 on same data"
+  - name: "HMMix"
+    citation: "Skov et al. 2020, Nature Genetics"
+    source: "official_repo"
+    repo: "https://github.com/LauritsSkov/Introgression-detection"
+    type: "must_include"
+    note: "HMM with variant density emission"
+  - name: "DAIseg"
+    citation: "Zhou et al. 2025 (bioRxiv)"
+    source: "official_repo"
+    repo: "TBD — confirm from bioRxiv preprint"
+    type: "must_include"
+    note: "Most recent HMM; joint NEA+DEN; variant density emission"
+  - name: "Sprime"
+    citation: "Browning et al. 2018, PLOS Genetics"
+    source: "official_repo"
+    repo: "https://faculty.washington.edu/browning/sprime.html"
+    type: "recommended"
+  - name: "ArchIE"
+    citation: "Hamid et al. 2023"
+    source: "official_repo"
+    repo: "TBD"
+    type: "recommended"
+
+pre_computed_results: null
+
+locked: false
+lock_date: null

@@ -1,0 +1,115 @@
+\section*{Introduction}
+
+The discovery that anatomically modern humans interbred with archaic hominins ---
+Neanderthals in Eurasia and Denisovans in Southeast Asia and Oceania ---
+fundamentally reshaped our understanding of human evolutionary history.
+Initial estimates from whole-genome sequencing of Vindija Cave Neanderthal
+and Altai Denisovan genomes established that $\sim$1--4\% of the genome of
+non-African modern humans is derived from archaic
+introgression~\citep{green2010draft, reich2010genetic, prufer2014complete}.
+Subsequent work demonstrated that these archaic-derived segments are not
+evolutionary relics but functionally active contributors to modern human
+phenotypic diversity and disease risk: archaic haplotypes have been identified
+in immune genes, metabolic pathways, and neurological
+circuits~\citep{sankararaman2014genomic, vernot2014resurrecting,
+dannemann2017contribution, browning2018ancestry}.
+The problem of reliably detecting, mapping, and attributing these introgressed
+segments at per-haplotype resolution across large population cohorts therefore
+sits at the intersection of evolutionary genomics, population genetics methodology,
+and medical genetics.
+
+Current computational approaches to archaic introgression detection share a
+fundamental design choice: they quantify introgression through archaic variant
+density, counting the number of archaic-diagnostic or archaic-specific alleles
+within a genomic window.
+HMMix~\citep{skov2018detecting}, DAIseg~\citep{planche2024daiseg}, and related tools
+model this density via Poisson or mixture emissions, using the excess of
+archaic-matching variants over a background frequency to flag introgressed regions.
+IBDmix~\citep{chen2020identifying} extends this principle to identity-by-descent
+comparisons at individual sites.
+These tools have produced important catalogs of introgressed segments, but they
+share a statistical limitation: they ignore the spatial correlations between
+archaic-matching sites along the chromosome --- the haplotype match-length signal.
+
+Coalescent theory predicts that this ignored signal is substantial.
+An introgressed haplotype entered the modern human gene pool $\sim$50,000 years ago
+(approximately 1,724 generations), while a non-introgressed haplotype last shared
+a common ancestor with an archaic genome $\sim$550,000 years ago
+(approximately 19,000 generations).
+The expected length of a perfect haplotype match to the archaic reference therefore
+differs by a factor of $\sim$11 between introgressed and non-introgressed segments.
+A method that tracks match lengths --- rather than merely match counts --- can
+leverage this contrast.
+This is precisely the insight behind the Li \& Stephens (LS) haplotype copying
+model~\citep{li2003modeling}, which has become the foundation of modern local
+ancestry inference tools including ChromoPainter~\citep{lawson2012inference},
+MOSAIC~\citep{salter2019mosaic}, and SparsePainter~\citep{yang2025sparsepainter}.
+In the modern ancestry setting, the LS model outperforms window-based frequency
+methods precisely because haplotype match length is informative about population
+of origin~\citep{price2009sensitive}.
+Some methods have partially exploited haplotype structure for archaic
+introgression: S'~PRIME~\citep{browning2018ancestry} uses LD patterns to
+identify introgressed fragments, and ArchIE~\citep{durvasula2019statistical}
+uses haplotype features in a random-forest framework.
+However, neither adopts the Li \& Stephens copying model with match-length
+emissions as the core inference mechanism, leaving the full potential of
+coalescent match-length statistics unexploited for archaic ancestry detection.
+
+Here we introduce \textbf{ArchaicPainter} (\AP{}), a three-state Hidden Markov
+Model for archaic introgression detection that extends the Li \& Stephens
+haplotype copying framework to include archaic reference genomes.
+\AP{} defines three hidden states --- anatomically modern human (AMH),
+Neanderthal (NEA), and Denisovan (DEN) --- and derives emission probabilities
+directly from coalescent match statistics, with transition probabilities
+parameterized by recombination distance and expected segment lengths from
+published admixture time estimates.
+Crucially, all parameters in \AP{} have explicit biological interpretations
+and are derived from coalescent theory rather than fitted to training data,
+reducing the demographic misspecification risk that Peede et al.~\citeyear{peede2025review}
+identified as a central limitation of simulation-trained machine learning methods
+for this problem.
+
+We validate \AP{} in three steps.
+On 50 independent simulation replicates with known ground truth
+(5~Mb per replicate, msprime~\citep{kelleher2018efficient}),
+\AP{} achieves F1 = $0.480 \pm 0.095$ versus F1 = $0.009 \pm 0.003$ for
+a Poisson density baseline --- a $56\times$ improvement
+(Wilcoxon $p = 8.9 \times 10^{-16}$) that directly quantifies the
+discriminative value of haplotype match-length information over variant
+density counting alone.
+We note this comparison is against a simplified density baseline rather
+than published tools; it is intended to isolate the specific contribution
+of match-length structure, not to benchmark \AP{} against HMMix or DAIseg.
+Applied to chromosome~21 of the 1000~Genomes Project Phase~3
+GRCh38 release for European (CEU) and East Asian (CHB) populations,
+\AP{} detects $\sim$2.1--2.3\% Neanderthal ancestry per haplotype,
+consistent with published estimates for this chromosome,
+at a median segment resolution of $\sim$90--113~kb.
+As an illustrative application, intersecting \AP{}-detected chr21
+introgressed regions with gene annotations identifies 7 of 16 previously
+published adaptive introgression candidates and a complete interferon
+receptor gene cluster (\textit{IFNAR1}, \textit{IFNAR2},
+\textit{IFNGR2}, \textit{IL10RB})~\citep{dannemann2017contribution},
+demonstrating that the method recovers biologically meaningful signals
+in an unsupervised manner.
+
+The specific contributions of this work are:
+
+\begin{itemize}
+  \item A principled extension of the Li \& Stephens haplotype copying model to
+    archaic introgression: to our knowledge, the first method for this problem that
+    derives emission probabilities from coalescent match-length statistics, rather
+    than variant density, as the primary discrimination signal.
+  \item A principled treatment of reference--donor divergence via a positive-only
+    emission mode, with empirical validation of its necessity through simulation ablation.
+  \item Simulation benchmarks establishing that haplotype match-length information
+    adds $56\times$ F1 improvement over density-based inference, motivating
+    the paradigm shift for future method development.
+  \item Proof-of-concept three-state detection simultaneously attributing query
+    haplotypes to NEA or DEN ancestry in a two-source admixture setting.
+  \item Near-linear computational scaling (empirical exponent 1.21) enabling
+    population-scale analysis without specialized hardware.
+  \item Open-source software (\AP{}) with fully scripted analysis pipelines
+    and a chromosome~21 functional annotation use case demonstrating trait-linked
+    archaic variant discovery.
+\end{itemize}

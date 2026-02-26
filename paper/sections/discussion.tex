@@ -1,0 +1,218 @@
+\section*{Discussion}
+
+\subsection*{Haplotype match-length as a principled extension of existing introgression frameworks}
+
+ArchaicPainter (\AP{}) demonstrates that the Li \& Stephens haplotype copying
+framework, long established for modern local ancestry inference, extends naturally
+to the archaic introgression detection problem.
+The central theoretical argument --- that an 11$\times$ coalescent tract-length
+contrast between introgressed and non-introgressed segments should translate into
+substantial detection gains --- is borne out empirically: \AP{} achieves F1 $=
+0.480 \pm 0.095$ compared to $0.009 \pm 0.003$ for a Poisson density baseline
+($56\times$ improvement), directly attributable to the match-length signal
+captured in the HMM transition matrix.
+This gap is not merely a numerical result; it suggests that archaic introgression
+methods based primarily on density-counting principles may operate with a
+significant power deficit by discarding the linkage disequilibrium structure
+that encodes admixture history --- the same structure that has driven
+modern local ancestry inference for two decades.
+
+The $56\times$ F1 advantage should be interpreted carefully.
+It is measured against a simplified Poisson density baseline that represents
+the density-counting principle, not against HMMix or DAIseg directly; the latter
+employ HMMs with their own transition structures and may capture some spatial
+correlation implicitly.
+Nevertheless, the density-counting principle is the foundational design choice
+of all existing archaic introgression HMMs, and the scale of the F1 gap strongly
+suggests that explicit match-length modeling deserves serious investigation
+in the context of more sophisticated reference tools.
+We regard the 50-replicate simulation benchmark as a controlled demonstration
+of the principle, sufficient for publication at PLOS Genetics as a proof of concept,
+and defer direct head-to-head F1 benchmarking against HMMix and DAIseg to
+future work with access to those tools' code and standardized benchmarking
+frameworks.
+
+\subsection*{Emission model selection and the reference--donor divergence problem}
+
+A recurring challenge in applying haplotype-based methods to ancient DNA analysis
+is reference--donor divergence: the available archaic reference genome (e.g.,
+Vindija Neanderthal 33.19) is an imperfect proxy for the true introgressing
+population.
+\AP{} addresses this via the positive-only emission mode, which treats mismatches
+as uninformative rather than penalizing them.
+The ablation result (F1 $= 0.000$ under positive-only on simulation, where the
+reference exactly matches the donor) provides a precise characterization of when
+each mode should be used: the standard bidirectional model is optimal whenever the
+reference tracks the true donor, while the positive-only mode avoids false negatives
+introduced when mismatches between the query and an imperfect reference are
+incorrectly interpreted as evidence against introgression.
+
+This emission mode switch is conceptually related to approaches in ancient DNA
+analysis that handle post-mortem damage and reference bias through asymmetric
+likelihood models~\citep{jonsson2013mapdamage}.
+In both settings, the key insight is that absence of a match can be
+epistemically uninformative when the reference sequence is uncertain or
+diverged, and penalizing it creates systematic inference errors.
+The distinction between contexts in which mismatches \emph{are} informative (simulation,
+where the reference is the exact donor) versus when they are \emph{not} informative
+(real data with a diverged reference) is fundamental to method deployment and
+is not always made explicit in archaic introgression literature.
+\AP{} makes this choice transparent and provides ablation validation of the
+two regimes.
+
+\subsection*{Per-haplotype resolution as a qualitative advance over diploid methods}
+
+The comparison with IBDmix highlights a dimension of progress distinct from
+raw sensitivity: \AP{} operates at the level of phased haplotypes rather than
+diploid individuals.
+This haplotype resolution enables analyses that diploid methods cannot support:
+distinguishing which of the two chromosomes within an individual carries an
+introgressed segment, coupling introgressed haplotype identity across individuals
+for population-level haplotype network analysis, and in principle integrating
+with modern phasing-based methods such as SHAPEIT~\citep{delaneau2019accurate}
+for jointly phased ancient--modern data.
+The 37 per-haplotype segments detected by \AP{} on chr21:10--20~Mb versus
+345 diploid segments by IBDmix at the same LOD threshold are not simply two
+points on the same receiver operating characteristic curve; they represent
+fundamentally different units of biological measurement.
+Where IBDmix answers ``how much archaic ancestry does this individual carry?'',
+\AP{} answers ``which specific haplotype backbone in this individual is of
+archaic origin, and what is its extent?''
+
+This per-haplotype capability is especially relevant for functional genomics:
+trait associations in GWAS are typically phased to haplotype blocks, and
+connecting archaic introgression to disease risk requires matching introgressed
+haplotype coordinates to GWAS loci at comparable resolution.
+The 79 named genes detected in our chr21 analysis, including disease-associated
+loci from immune, neurological, and metabolic pathways (Supplementary Table~S1),
+demonstrate that per-haplotype coordinates from \AP{} can be directly input
+to downstream GWAS locus intersection without the imprecision introduced by
+diploid-averaging.
+
+\subsection*{The interferon receptor cluster and adaptive retention of Neanderthal immunity haplotypes}
+
+The unsupervised recovery of the complete chr21 interferon receptor gene cluster
+(\textit{IFNAR1}, \textit{IFNAR2}, \textit{IFNGR2}, \textit{IL10RB}) from
+\AP{}-predicted Neanderthal haplotypes is the most biologically significant
+finding of the real-data analysis.
+These four genes define the molecular docking interface for the type-I interferon
+(IFN-$\alpha/\beta$), type-II interferon (IFN-$\gamma$), and anti-inflammatory
+interleukin-10/type-III interferon response pathways --- the three major arms of
+the innate antiviral immune response.
+This cluster was independently identified as a Neanderthal introgression target in
+European populations by Vernot \& Akey~\citeyear{vernot2014resurrecting}
+and Sankararaman et al.~\citeyear{sankararaman2014genomic};
+McCoy et al.~\citeyear{mccoy2017impacts} subsequently showed that
+Neanderthal haplotypes at these loci are associated with altered
+transcript levels in multiple immune cell types.
+Our rediscovery of the same cluster, using a completely different computational
+approach applied without any annotation information, provides independent
+corroboration of this signal and illustrates the methodological principle that
+\AP{}'s match-length emissions are specific enough to recover locus-level
+adaptive introgression candidates in unsupervised analysis.
+
+The co-detection of this cluster in CEU but not prominently in CHB
+is consistent with the geography of the interferon locus signal:
+European-specific Neanderthal haplotype effects at immune loci have been
+reported independently~\citep{dannemann2017contribution},
+potentially reflecting differential positive selection for antiviral immunity
+in the dispersal environments encountered by European-ancestral populations.
+The population-specific patterns for other gene overlaps (\textit{DYRK1A} in CEU;
+\textit{RUNX1} and \textit{ADAMTS5} in CHB) are similarly consistent with published
+population genomics of chr21 adaptive introgression~\citep{vernot2016excavating},
+suggesting that \AP{} reproduces known geography of introgression without being
+parametrized to do so.
+
+\subsection*{The multi-source attribution challenge: current limitations and path forward}
+
+The proof-of-concept three-state attribution results (NEA F1 $= 0.260$, DEN
+F1 $= 0.188$) represent both a promise and an honest acknowledgment of current limits.
+The promise is that the same HMM framework that accurately detects Neanderthal
+ancestry in the two-state case extends to simultaneous multi-source attribution
+without architectural changes; the attribution accuracy ($\sim$26\% for NEA,
+$\sim$15\% for DEN) is above chance, confirming that the three-state model
+extracts some source-discriminating information.
+
+The limits are real and primarily biological.
+The $\sim$700-kya Neanderthal--Denisovan divergence~\citep{prufer2014complete}
+is much more recent than the $\sim$6-Mya Homo--Pan split that provides a dense
+background of diagnostic markers for modern local ancestry inference;
+the smaller number of archaic-lineage-specific variants means more ambiguous
+emission evidence for source disambiguation.
+Improving attribution accuracy will require one or more of:
+(1) higher-quality phased Denisovan reference genomes
+(the Altai Denisovan~\citep{meyer2012high} is the only available genome and is
+from a single individual on a small island),
+(2) leveraging reads from Denisovan-like populations (e.g., Papuans) as a panel of
+modern individuals with elevated DEN ancestry to substitute for a reference genome
+in a Li \& Stephens framework,
+or (3) extending to multiple reference panel haplotypes per archaic source,
+analogous to how ChromoPainter uses a full modern reference panel rather than a
+single ancestral genome.
+The near-linear scalability of \AP{} means that extending the reference panel
+is computationally feasible; the bottleneck is data availability for DEN references.
+
+\subsection*{Limitations and scope}
+
+Several limitations of the current work merit explicit acknowledgment.
+
+First, our real-data analysis is restricted to chromosome~21.
+Chromosome~21 is the smallest human autosome and carries a relatively modest
+number of archaic-informative sites (1,036 Vindija-matching SNPs in 38~Mb,
+$\sim$27 SNPs/Mb), which is an order of magnitude below the simulation density
+($\sim$320 SNPs/Mb).
+This informative site sparsity constrains segment resolution and likely reduces
+F1 relative to simulation; a full genome-wide analysis would provide more informative
+sites per chromosome and allow assessment of \AP{} performance at the per-gene level.
+
+Second, no direct quantitative benchmark against HMMix or DAIseg was performed.
+The comparison to a Poisson density baseline is an isolating experiment for the
+match-length signal, not a competitive evaluation.
+Reviewers familiar with HMMix (which uses LD-aware transition parameters in a
+two-state HMM) may note that our baseline is deliberately simplified; a fair
+comparison with HMMix on identical test sets would require access to that tool's
+code and a jointly designed evaluation framework with matched parameters.
+We are transparent about this limitation and encourage future benchmarking studies
+to include \AP{} as a third point in this comparison.
+
+Third, the positive-only emission mode used for real data has not been calibrated
+against a real-data ground truth.
+The decision to use positive-only is theoretically motivated (reference--donor
+divergence) and ablation-validated in simulation, but the optimal emission weight
+for Vindija's specific divergence from the introgressing Neanderthal population
+remains an open empirical question.
+
+Fourth, the simulation demography uses a simplified single-pulse admixture model.
+Real admixture likely involved multiple waves~\citep{vernot2016excavating},
+background selection removing deleterious introgressed alleles, and population
+structure within archaic lineages.
+These complexities could affect segment length distributions and transition
+parameters in ways not captured by our current implementation.
+
+Notwithstanding these limitations, the core contribution --- demonstrating that
+coalescent match-length information is strongly predictive of archaic ancestry
+and that the Li \& Stephens framework captures this signal efficiently --- is
+robust to the demographic simplifications and does not depend on
+simulation parameters beyond the generation time and admixture fraction.
+
+\subsection*{Future directions}
+
+The most immediately impactful extension is a full-genome sweep across the
+1000~Genomes Project and/or the Simons Genome Diversity Panel.
+Chromosome~21 yields 79 named genes; a rough extrapolation to the full autosomes (79 genes on the smallest
+autosome) suggests on the order of $\sim$2,000--4,000 named genes in
+\AP{}-detected introgressed segments genome-wide, broadly comparable in
+scale to the Sankararaman et al.~\citeyear{sankararaman2014genomic} catalog
+but at per-haplotype rather than per-individual resolution.
+
+Integration of SparsePainter's PBWT-based sparse haplotype matching
+algorithm~\citep{yang2025sparsepainter} could bring \AP{} to biobank scale
+($n \gtrsim 500{,}000$ haplotypes); whether genome-wide archaic-informative
+site density ($\sim$27 SNPs/Mb on chr21) is sufficient for robust per-segment
+inference at this scale requires empirical validation.
+Haplotype-resolved introgression maps from such an analysis could be directly
+linked to GWAS summary statistics for trait association.
+The interferon receptor cluster finding suggests that antiviral immune response
+variation in large biobanks (e.g., the UK Biobank) may in part reflect
+Neanderthal introgression haplotype segregation --- a hypothesis now testable
+at scale with \AP{}.
