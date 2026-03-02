@@ -50,7 +50,7 @@ of origin~\citep{price2009sensitive}.
 Some methods have partially exploited haplotype structure for archaic
 introgression: S'~PRIME~\citep{browning2018ancestry} uses LD patterns to
 identify introgressed fragments, and ArchIE~\citep{durvasula2019statistical}
-uses haplotype features in a random-forest framework.
+uses haplotype features in a logistic regression framework.
 However, neither adopts the Li \& Stephens copying model with match-length
 emissions as the core inference mechanism, leaving the full potential of
 coalescent match-length statistics unexploited for archaic ancestry detection.
@@ -71,7 +71,7 @@ for this problem.
 
 We validate \AP{} in three steps.
 On 50 independent simulation replicates with known ground truth
-(5~Mb per replicate, msprime~\citep{kelleher2018efficient}),
+(5~Mb per replicate, msprime~\citep{kelleher2016efficient}),
 \AP{} achieves F1 = $0.480 \pm 0.095$ versus F1 = $0.009 \pm 0.003$ for
 a Poisson density baseline --- a $56\times$ improvement
 (Wilcoxon $p = 8.9 \times 10^{-16}$) that directly quantifies the
