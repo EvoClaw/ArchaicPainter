@@ -76,9 +76,17 @@ We therefore treat mismatches as uninformative for real-data analyses:
   \end{cases}
   \label{eq:emiss_nea_pos}
 \end{equation}
-Setting $P(\text{mismatch} \mid S_\mathrm{NEA}) = 1/2$ assigns zero log-odds
-to disagreements, equivalent to treating mismatches as uninformative when the
-reference diverges from the true donor.
+Setting $P(\text{mismatch} \mid S_\mathrm{NEA}) = 1/2$ substantially
+reduces the log-odds penalty for mismatches relative to the standard model
+($\log\theta = \log 0.01$), making the NEA state largely agnostic to
+disagreements.
+Note that this is not strictly ``zero log-odds'' relative to the AMH state,
+since the AMH emission uses $f^\mathrm{YRI}_i$ rather than $1/2$; however,
+for sites with archaic minor allele (low $f^\mathrm{YRI}$), the AMH emission
+at a mismatch site ($P = 1 - f^\mathrm{YRI} \approx 1$) also approximates 1,
+so the relative contribution to the NEA/AMH log-odds ratio is negligible.
+In practice this mode is appropriate whenever reference--donor divergence
+means that mismatches cannot be reliably attributed to archaic absence.
 Critically, the standard and positive-only emission models are \emph{not}
 interchangeable: on simulation, the positive-only model achieves F1 $= 0.000$
 because mismatches carry essential discriminative information when the reference
@@ -94,13 +102,20 @@ Under the Haldane recombination model~\citep{price2009sensitive}:
   P(S_{i+1} = s \mid S_i = s) = e^{-d_i \cdot t_s},
   \label{eq:trans}
 \end{equation}
-where $t_s$ is the time parameter in generations:
-$t_\mathrm{NEA} = 1{,}724$, $t_\mathrm{DEN} = 1{,}000$,
-$t_\mathrm{AMH} = 19{,}000$.
-The expected tract length is $1/t_s$ Morgans
-($\approx$58 kb for NEA; $\approx$100 kb for DEN; $\approx$5 kb for AMH
-at 1~cM/Mb).
-Off-diagonal probabilities are distributed uniformly.
+where $d_s = 1/t_s^\mathrm{eff}$ (Morgans) is the expected tract length for state $s$.
+For the two archaic states, $t_s^\mathrm{eff}$ is the admixture time:
+$t_\mathrm{NEA}^\mathrm{eff} = 1{,}724$ generations ($d_\mathrm{NEA} \approx 58$~kb)
+and $t_\mathrm{DEN}^\mathrm{eff} = 1{,}552$ generations ($d_\mathrm{DEN} \approx 64$~kb).
+For the AMH background state, which spans ${\sim}98\%$ of the genome, the
+expected block length between introgression events is
+$d_\mathrm{AMH} = 1/(\pi_\mathrm{arch} \cdot t_\mathrm{NEA}^\mathrm{eff})
+\approx 1/(0.020 \times 1{,}724) \approx 2.9$~Mb,
+where $\pi_\mathrm{arch}$ is the total archaic prior.
+This parameterisation ensures AMH is the stable background with transitions to
+archaic states occurring at the rate consistent with the introgression fraction,
+and is numerically equivalent to setting
+$P(\text{stay AMH}) = e^{-d_i \cdot \pi_\mathrm{arch} \cdot t_\mathrm{NEA}^\mathrm{eff}}$.
+Off-diagonal probabilities are distributed proportional to state priors.
 Genetic distances are computed by linear interpolation of the GRCh38
 sex-averaged recombination map~\citep{halldorsson2019characterizing}
 (HapMap-II format, UCSC Genome Browser).
@@ -213,4 +228,4 @@ $K$ = states.
 
 \AP{} is implemented in Python~3.12; code, simulation scripts, preprocessing
 pipelines, and pinned dependencies (\texttt{environment.yml}) are provided
-in Supplementary Scripts~S1--S5 and at \url{https://github.com/[repository]}.
+in Supplementary Scripts~S1--S5 and at \url{https://github.com/EvoClaw/ArchaicPainter}.

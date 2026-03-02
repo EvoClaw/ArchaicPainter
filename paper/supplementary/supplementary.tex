@@ -116,7 +116,7 @@ $t_\mathrm{split}$ & 19,000 generations & $\sim$550 kya / 29 yr generation time 
 Match-length ratio & $11\times$ & $t_\mathrm{split} / t_\mathrm{admixture}$ \\
 Expected NEA segment & 58 kb & $1 / t_\mathrm{admixture}$ at 1 cM/Mb \\
 $\pi_\mathrm{NEA}$ prior & 0.02 & Published 2\% Neanderthal ancestry fraction \\
-$\theta_\mathrm{emit}$ & 0.0005 & Per-site emission error / mutation rate \\
+$\theta_\mathrm{emit}$ & 0.01 & Per-site emission error / mutation rate \\
 Merge gap & 10 kb & Post-Viterbi gap filling (calibrated on simulation) \\
 Min segment & 10 kb & Post-Viterbi minimum segment filter \\
 \hline
@@ -140,7 +140,7 @@ F1 scores under $\pm$20\% perturbation of key HMM parameters, evaluated on the
 \hline
 Standard ArchaicPainter (default) & 0.480 & 0.095 \\
 CEU YRI reference (vs.\ standard YRI) & 0.507 & 0.092 \\
-$\theta_\mathrm{emit} \times 2$ (high) & 0.470 & 0.100 \\
+$\theta_\mathrm{emit} \times 2$ (high, $\theta=0.02$) & 0.470 & 0.100 \\
 No segment merging & 0.488 & 0.095 \\
 Positive-only emission & 0.000 & 0.000 \\
 \hline

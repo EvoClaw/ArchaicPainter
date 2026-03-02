@@ -98,8 +98,15 @@ Neanderthal detection yielded F1 = $0.260 \pm 0.109$ with source attribution
 accuracy $26.1\% \pm 13.5\%$; Denisovan detection yielded F1 = $0.188 \pm 0.105$
 with attribution accuracy $15.2\% \pm 10.1\%$.
 Cross-contamination was 11.9\% (NEA predicted overlapping true DEN)
-and 19.3\% (DEN overlapping true NEA), substantially better than the $\sim$50\%
-expected from random source assignment.
+and 19.3\% (DEN overlapping true NEA).
+As a reference level, a null model that predicts archaic state randomly
+in proportion to prior probabilities ($\pi_\mathrm{NEA} = 0.018$,
+$\pi_\mathrm{DEN} = 0.002$) would place $\sim$99.9\% of calls in the NEA
+state and thus achieve near-zero DEN recall; a uniform-random source
+assignment conditional on a call being archaic would give $\sim$50\%
+cross-contamination under the simulation's 2:1 NEA:DEN ratio.
+The observed cross-contamination rates (11.9\% and 19.3\%) thus indicate
+genuine discriminative capacity beyond chance.
 
 The moderate attribution accuracies reflect two compounding biological constraints.
 First, the $\sim$700-kya Neanderthal--Denisovan
