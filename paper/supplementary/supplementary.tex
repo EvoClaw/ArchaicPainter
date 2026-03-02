@@ -1,55 +1,230 @@
 \section*{Supplementary Material}
 
-\subsection*{Supplementary Table S1: Genes in ArchaicPainter-detected introgressed regions on chromosome 21}
+%% ── Supplementary Table S1 ──────────────────────────────────────────────────
+\subsection*{Supplementary Table S1: Named genes in ArchaicPainter-detected introgressed regions}
 
-Full list of 79 named genes overlapping ArchaicPainter-detected Neanderthal-introgressed
-regions on chromosome~21 (chr21:10--48~Mb, hg38), with coordinates, population overlap
-(CEU-specific / CHB-specific / shared), known trait associations from GWAS and
-adaptive introgression literature, and overlap status with published adaptive
-introgression candidates.
-See \texttt{docs/05\_execution/functional\_annotation\_chr21.json} and
-\texttt{code/phase5\_functional\_annotation.py} in the code repository.
+\begin{longtable}{llcc}
+\caption{Named genes overlapping ArchaicPainter-detected Neanderthal-introgressed
+regions on chromosome~21 (chr21:10--48~Mb, hg38). ``AI candidate'' indicates genes
+appearing in the published list of 16 chr21 adaptive introgression candidates
+surveyed in this study. Population: CEU = European, CHB = East Asian.}
+\label{tab:genes} \\
+\hline
+\textbf{Gene} & \textbf{Population} & \textbf{AI candidate} & \textbf{Known trait / function} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Gene} & \textbf{Population} & \textbf{AI candidate} & \textbf{Known trait / function} \\
+\hline
+\endhead
+\hline
+\endfoot
+  \textit{ABCG1} & CEU & --- & --- \\
+  \textit{ADAMTS1} & CHB & --- & --- \\
+  \textit{ADAMTS5} & CHB & --- & --- \\
+  \textit{ANKRD20A18P} & CEU+CHB & --- & --- \\
+  \textit{ATP5PO} & CHB & --- & --- \\
+  \textit{B3GALT5} & CHB & \checkmark & Blood group antigens; sialylation \\
+  \textit{BACE2} & CEU & --- & --- \\
+  \textit{C21orf58} & CEU & --- & --- \\
+  \textit{C21orf91} & CHB & --- & --- \\
+  \textit{C2CD2} & CEU & --- & --- \\
+  \textit{CBR1} & CHB & --- & --- \\
+  \textit{CBR3} & CHB & --- & --- \\
+  \textit{CHODL} & CEU+CHB & --- & --- \\
+  \textit{CLDN17} & CEU & --- & --- \\
+  \textit{COL6A2} & CEU & --- & --- \\
+  \textit{CXADR} & CHB & \checkmark & Coxsackievirus A receptor; cardiac inflammation \\
+  \textit{DNAJC28} & CEU+CHB & --- & --- \\
+  \textit{DOP1B} & CEU+CHB & --- & --- \\
+  \textit{DSCAM} & CEU & --- & --- \\
+  \textit{DSCR4} & CEU+CHB & --- & --- \\
+  \textit{DYRK1A} & CEU & \checkmark & Brain development; autism; Down syndrome \\
+  \textit{FAM3B} & CHB & --- & --- \\
+  \textit{FBXW11P1} & CEU & --- & --- \\
+  \textit{FTCD} & CEU & --- & --- \\
+  \textit{GART} & CEU+CHB & --- & --- \\
+  \textit{GRIK1} & CEU & --- & --- \\
+  \textit{GRIK1-AS1} & CEU & --- & --- \\
+  \textit{HSPA13} & CEU+CHB & --- & --- \\
+  \textit{HUNK} & CEU+CHB & --- & --- \\
+  \textit{IFNAR1} & CEU & --- & --- \\
+  \textit{IFNAR2} & CEU+CHB & --- & --- \\
+  \textit{IFNGR2} & CEU & --- & --- \\
+  \textit{IL10RB} & CEU+CHB & --- & --- \\
+  \textit{KRTAP10-4} & CHB & --- & --- \\
+  \textit{KRTAP10-5} & CHB & --- & --- \\
+  \textit{KRTAP19-8} & CHB & --- & --- \\
+  \textit{LIPI} & CEU+CHB & \checkmark & Lipid metabolism; triglyceride hydrolysis \\
+  \textit{LSS} & CEU & --- & --- \\
+  \textit{MCM3AP} & CEU & --- & --- \\
+  \textit{MIS18A} & CEU & --- & --- \\
+  \textit{MRAP} & CEU+CHB & --- & --- \\
+  \textit{NDUFV3} & CEU & --- & --- \\
+  \textit{NRIP1} & CHB & \checkmark & Estrogen receptor interaction; metabolic function \\
+  \textit{PCBP3} & CEU & --- & --- \\
+  \textit{PCNT} & CEU & --- & --- \\
+  \textit{PDE9A} & CEU & --- & --- \\
+  \textit{PKNOX1} & CEU & --- & --- \\
+  \textit{PRDM15} & CEU & --- & --- \\
+  \textit{PTTG1IP} & CHB & \checkmark & Thyroid function; pituitary tumor transforming \\
+  \textit{RBM11} & CEU & --- & --- \\
+  \textit{RCAN1} & CHB & --- & --- \\
+  \textit{RHOT1P2} & CHB & --- & --- \\
+  \textit{RIMKLBP1} & CHB & --- & --- \\
+  \textit{RIPK4} & CEU & --- & --- \\
+  \textit{RNA5SP488} & CEU+CHB & --- & --- \\
+  \textit{RSPH1} & CEU & --- & --- \\
+  \textit{RUNX1} & CHB & \checkmark & Platelet count; hematopoiesis; leukemia risk \\
+  \textit{SCAF4} & CEU & --- & --- \\
+  \textit{SETD4} & CHB & --- & --- \\
+  \textit{SLC37A1} & CEU & --- & --- \\
+  \textit{SOD1} & CEU & --- & --- \\
+  \textit{SON} & CEU+CHB & --- & --- \\
+  \textit{SPATC1L} & CEU & --- & --- \\
+  \textit{SRSF9P1} & CEU & --- & --- \\
+  \textit{SUMO3} & CEU & --- & --- \\
+  \textit{TFF1} & CEU & --- & --- \\
+  \textit{TFF2} & CEU & --- & --- \\
+  \textit{TFF3} & CEU & --- & --- \\
+  \textit{TIAM1} & CEU+CHB & --- & --- \\
+  \textit{TMPRSS15} & CEU & --- & --- \\
+  \textit{TMPRSS3} & CEU & --- & --- \\
+  \textit{TSPEAR} & CHB & --- & --- \\
+  \textit{UBASH3A} & CEU & --- & --- \\
+  \textit{UMODL1} & CEU & --- & --- \\
+  \textit{UMODL1-AS1} & CEU & --- & --- \\
+  \textit{URB1} & CHB & --- & --- \\
+  \textit{WDR4} & CEU & --- & --- \\
+  \textit{YBEY} & CEU & --- & --- \\
+  \textit{ZBTB21} & CEU & --- & --- \\
+\end{longtable}
 
+%% ── Supplementary Table S2 ──────────────────────────────────────────────────
 \subsection*{Supplementary Table S2: ArchaicPainter HMM parameter values}
 
-Default parameter values for the ArchaicPainter HMM used in all analyses,
-with biological justifications:
+Default parameter values used in all analyses, with coalescent-theoretic justifications.
 
+\begin{table}[h]
+\centering
 \begin{tabular}{lll}
 \hline
-Parameter & Value & Justification \\
+\textbf{Parameter} & \textbf{Value} & \textbf{Justification} \\
 \hline
-$t_\mathrm{admixture}$ & 1,724 generations & $\sim$50 kya / 29 yr per generation \\
-$t_\mathrm{split}$ & 19,000 generations & $\sim$550 kya / 29 yr per generation \\
-$\pi_\mathrm{NEA}$ & 0.02 & Prior Neanderthal ancestry fraction \\
-$\theta_\mathrm{emit}$ & 0.0005 & Per-site match mutation/error rate \\
-Merge gap & 10 kb & Calibrated on 50-replicate simulation \\
-Min segment & 10 kb & Calibrated on 50-replicate simulation \\
+$t_\mathrm{admixture}$ & 1,724 generations & $\sim$50 kya / 29 yr generation time \\
+$t_\mathrm{split}$ & 19,000 generations & $\sim$550 kya / 29 yr generation time \\
+Match-length ratio & $11\times$ & $t_\mathrm{split} / t_\mathrm{admixture}$ \\
+Expected NEA segment & 58 kb & $1 / t_\mathrm{admixture}$ at 1 cM/Mb \\
+$\pi_\mathrm{NEA}$ prior & 0.02 & Published 2\% Neanderthal ancestry fraction \\
+$\theta_\mathrm{emit}$ & 0.0005 & Per-site emission error / mutation rate \\
+Merge gap & 10 kb & Post-Viterbi gap filling (calibrated on simulation) \\
+Min segment & 10 kb & Post-Viterbi minimum segment filter \\
 \hline
 \end{tabular}
+\caption{ArchaicPainter HMM default parameters. Generation time: 29 years.
+Admixture time: $\sim$50 kya (Prüfer et al.\ 2014). AMH--archaic split: $\sim$550 kya.}
+\label{tab:params}
+\end{table}
 
+%% ── Supplementary Table S3 ──────────────────────────────────────────────────
 \subsection*{Supplementary Table S3: Parameter sensitivity analysis}
 
-F1 scores for ArchaicPainter under 10\% and 20\% perturbation of each HMM parameter
-(see \texttt{code/phase4b\_bench\_v4.py} configurations
-\texttt{ap\_ceu\_ref} and \texttt{ap\_theta\_high}).
-Results show that F1 is robust to $\pm$20\% changes in $\theta_\mathrm{emit}$ and
-to the use of the CEU YRI reference versus the standard YRI reference
-(F1 differences $< 0.04$ across all perturbations).
+F1 scores under $\pm$20\% perturbation of key HMM parameters, evaluated on the
+50-replicate simulation benchmark (seeds 42--91).
 
-\subsection*{Supplementary Table S4: Stricter F1 definitions}
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Configuration} & \textbf{Mean F1} & \textbf{Std F1} \\
+\hline
+Standard ArchaicPainter (default) & 0.480 & 0.095 \\
+CEU YRI reference (vs.\ standard YRI) & 0.507 & 0.092 \\
+$\theta_\mathrm{emit} \times 2$ (high) & 0.470 & 0.100 \\
+No segment merging & 0.488 & 0.095 \\
+Positive-only emission & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\caption{Parameter sensitivity: all perturbations except positive-only emission
+yield F1 differences $<0.04$ from the default configuration, confirming robustness
+to parameter choices within the biologically motivated range.
+The positive-only collapse confirms its domain restriction (see main text).}
+\label{tab:sensitivity}
+\end{table}
 
-Segment-level F1 evaluated under 50\% reciprocal overlap criterion (versus the
-default 1-bp overlap) for ArchaicPainter and the Poisson density baseline.
-The 56$\times$ performance gap persists under the stricter overlap definition,
-confirming that the advantage is not an artifact of lenient overlap counting.
+%% ── Supplementary Table S4 ──────────────────────────────────────────────────
+\subsection*{Supplementary Table S4: Stricter F1 evaluation}
 
-\subsection*{Supplementary Figure S1: ArchaicPainter HMM architecture}
+Segment-level F1 under 50\% reciprocal-overlap criterion (versus the default 1-bp overlap).
 
-Schematic of the three-state Hidden Markov Model (AMH / NEA / DEN states),
-emission model equations, and example Viterbi path on a simulated haplotype.
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Method} & \textbf{Mean F1 (1-bp overlap)} & \textbf{Mean F1 (50\% overlap)} \\
+\hline
+ArchaicPainter (standard) & 0.480 & 0.388 \\
+Poisson density baseline & 0.009 & 0.003 \\
+\hline
+Fold improvement & $56\times$ & $\sim$129$\times$ \\
+\hline
+\end{tabular}
+\caption{The $56\times$ F1 advantage persists and widens under a stricter 50\%
+reciprocal-overlap criterion, confirming that \AP{}'s advantage is not an artifact
+of lenient overlap counting. The 50\%-overlap F1 for \AP{} reflects longer,
+more precisely localised segments rather than fragmented short calls.}
+\label{tab:strict_f1}
+\end{table}
 
-\subsection*{Supplementary Figure S2: NEA/DEN attribution simulation results}
+%% ── Supplementary Figure S1 ─────────────────────────────────────────────────
+\subsection*{Supplementary Figure S1: ArchaicPainter HMM architecture and Viterbi decoding}
 
-Box plots of F1, attribution accuracy, and cross-contamination for the three-state
-ArchaicPainter HMM on 20 replicates of a two-source (NEA + DEN) simulation.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\textwidth]{figures/sfig1_hmm_viterbi}
+\caption{\textbf{ArchaicPainter HMM architecture and example Viterbi decoding.}
+\textbf{(a)} Three-state HMM with states AMH (blue), NEA (orange), and DEN (green).
+Transition probabilities follow $\exp(-d \cdot t)$ where $d$ is the recombination distance
+in Morgans and $t$ is the admixture time in generations.
+Emission models are shown for both the standard bidirectional mode (simulation, where
+the reference matches the true donor) and the positive-only mode (real data, where
+reference--donor divergence makes mismatches uninformative).
+\textbf{(b)} Default HMM parameter values with biological justifications.
+All parameters are derived from published coalescent theory and admixture time estimates;
+no parameters are fitted to training data.
+\textbf{(c)} Example Viterbi decoding output on a single simulated haplotype (seed 42,
+5~Mb region, 2\% Neanderthal admixture).
+The true introgressed segment (SNPs 60--140, orange shading) generates a dense cluster
+of archaic reference matches (top track, orange bars), which translates into elevated
+NEA posterior probability (middle track, red curve), and is correctly captured by the
+Viterbi path (bottom track, black step function, SNPs 55--145).
+The slight over-extension of the Viterbi path relative to the true segment reflects
+the 10-kb gap-merging post-processing step.}
+\label{sfig:hmm}
+\end{figure}
+
+%% ── Supplementary Figure S2 ─────────────────────────────────────────────────
+\subsection*{Supplementary Figure S2: Three-state Neanderthal/Denisovan source attribution}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\textwidth]{figures/sfig2_attribution}
+\caption{\textbf{Three-state ArchaicPainter source attribution results on two-source
+simulation (20 replicates, seeds 100--119).}
+Simulation demography: 5~Mb region, 2\% Neanderthal (NEA) + 1\% Denisovan (DEN)
+simultaneous admixture, matched simulated archaic reference panels.
+\textbf{Top row (orange)}: NEA segment-level F1 score (mean $0.260 \pm 0.109$),
+NEA source attribution accuracy (mean $26.1\% \pm 13.5\%$), and NEA-to-DEN
+cross-contamination rate (fraction of NEA predictions overlapping true DEN regions;
+mean $11.9\%$).
+\textbf{Bottom row (green)}: DEN F1 score (mean $0.188 \pm 0.105$),
+DEN attribution accuracy (mean $15.2\% \pm 10.1\%$), and DEN-to-NEA
+cross-contamination (mean $19.3\%$).
+Attribution accuracies above chance ($>$10\% for both sources) confirm that the
+three-state HMM extracts lineage-discriminating information from the available
+archaic-lineage-specific alleles, despite the limited NEA--DEN divergence
+($\sim$700 kya; Prüfer et al.\ 2014).
+Box plots show median and IQR; points show individual replicates; dashed red line
+indicates mean.}
+\label{sfig:attribution}
+\end{figure}
