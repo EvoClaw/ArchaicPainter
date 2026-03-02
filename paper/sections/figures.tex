@@ -25,19 +25,21 @@ discrimination signal in \AP{}.}
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_benchmark}
-\caption{\textbf{Simulation benchmark: ArchaicPainter versus Poisson density baseline.}
+\caption{\textbf{ArchaicPainter simulation benchmark and ablation analysis.}
 \textbf{(a)} Segment-level F1 score distributions across 50 independent simulation
 replicates (5~Mb, 20 haplotypes, 2\% Neanderthal admixture, seeds 42--91).
-\AP{} (standard bidirectional emission, orange) achieves F1 $= 0.480 \pm 0.095$,
-compared to $0.009 \pm 0.003$ for the Poisson density baseline (blue).
-The no-merge ablation (green) yields F1 $= 0.488$ (not significantly different,
-$p = 0.999$); the positive-only emission ablation (red) collapses to F1 $= 0.000$
-when evaluated in simulation where the reference matches the true introgression source
-(Wilcoxon one-sided, $p = 8.9 \times 10^{-16}$).
-Bracket indicates the overall \AP{}-vs-Poisson Wilcoxon $p$-value.
-\textbf{(b)} Area under the precision-recall curve (AUPRC) for ArchaicPainter
-($0.577$) versus Poisson density ($0.147$), confirming that posterior probability
-thresholds in \AP{} provide calibrated segment rankings.}
+\AP{} with the standard bidirectional emission (orange) achieves F1 $= 0.480 \pm 0.095$.
+The no-merge ablation (green) yields F1 $= 0.488$ ($p = 0.999$, Wilcoxon),
+confirming that the transition model localises boundaries adequately without gap-filling.
+The positive-only emission ablation (red) yields F1 $= 0.154 \pm 0.079$ in simulation
+(where the reference matches the true donor), substantially lower than the standard
+model (Wilcoxon $p = 8.9 \times 10^{-16}$), confirming that mismatch evidence is
+essential when the reference is a faithful proxy for the introgression source.
+Bracket indicates the two-sided Wilcoxon $p$-value for standard vs.~positive-only.
+\textbf{(b)} Area under the precision-recall curve (AUPRC) for each configuration,
+showing that the standard model ($0.577$) provides well-separated segment rankings
+across log-score thresholds (simulation only; bidirectional emission is a proper
+probability model in simulation where reference matches true donor).}
 \label{fig:benchmark}
 \end{figure}
 
@@ -47,15 +49,15 @@ thresholds in \AP{} provide calibrated segment rankings.}
 \includegraphics[width=\textwidth]{figures/fig3_realdata}
 \caption{\textbf{Real-data Neanderthal ancestry detection and comparison with IBDmix.}
 \textbf{(a)} Per-haplotype Neanderthal ancestry fraction on chromosome~21
-(chr21:10--48~Mb) for 40~CEU ($2.28\% \pm 1.22\%$, orange) and 40~CHB
-($2.09\% \pm 0.77\%$, blue) haplotypes.
+(chr21:10--46.7~Mb, GRCh38) for 40~CEU ($1.10\% \pm 0.60\%$, orange) and 40~CHB
+($0.98\% \pm 0.52\%$, blue) haplotypes.
 Error bars indicate one standard deviation across haplotypes.
 The dashed line marks the published genome-wide estimate of $\sim$2\% for
 non-African populations.
-The two populations do not differ significantly (Mann--Whitney $p = 0.66$).
+The two populations do not differ significantly (Mann--Whitney $p = 0.31$).
 \textbf{(b)} Comparison of \AP{} (per-haplotype) and IBDmix (per-diploid-individual)
 on chr21:10--20~Mb (20~CEU individuals).
-\AP{} calls fewer, longer segments (0.93 segments/haplotype, mean 234~kb) than
+\AP{} calls fewer, longer segments (1.25 segments/haplotype, mean 69.4~kb) than
 IBDmix (17.3 segments/individual, mean 15.2~kb), reflecting complementary operating
 characteristics: \AP{} provides haplotype-resolved long-segment calls, while
 IBDmix provides high-sensitivity site-level detection.
@@ -74,8 +76,9 @@ Data points (orange circles) are measured over a 5-Mb region with 1,036 informat
 sites.
 The dashed grey line shows a log-log regression fit with empirical scaling exponent
 $\approx 1.21$, close to the theoretical $O(n)$ for the Viterbi algorithm.
-The red star marks $n = 1{,}000$ haplotypes (0.114~s/haplotype), extrapolating
-to $\sim$13~cpu-hours for a full genome-wide scan of 1,000 haplotypes.}
+The red star marks $n = 1{,}000$ haplotypes (0.114~s/haplotype);
+genome-wide extrapolation yields $\sim$19 cpu-hours (bp-based) or
+$\sim$1 cpu-hour (site-density-based at 27 SNPs/Mb).}
 \label{fig:scalability}
 \end{figure}
 
@@ -86,7 +89,7 @@ to $\sim$13~cpu-hours for a full genome-wide scan of 1,000 haplotypes.}
 \caption{\textbf{Functional annotation of ArchaicPainter-detected Neanderthal
 introgressed regions on chromosome~21.}
 Detected introgressed segments for CEU (top, orange) and CHB (bottom, blue)
-haplotypes along chromosome~21 (10--48~Mb, GRCh38), with known trait-associated
+haplotypes along chromosome~21 (10--46.7~Mb, GRCh38), with known trait-associated
 genes annotated.
 The complete type-I and type-II interferon receptor gene cluster
 (\textit{IFNAR1}, \textit{IFNAR2}, \textit{IFNGR2}, \textit{IL10RB}) at
@@ -96,7 +99,7 @@ immunity haplotypes in European populations.
 Population-specific signals include \textit{DYRK1A} (CEU; neurodevelopment) and
 \textit{RUNX1}, \textit{ADAMTS5} (CHB; hematopoiesis, osteoarthritis).
 In total, 7 of 16 previously published chr21 adaptive introgression candidates are
-recovered among the 79 named genes overlapping \AP{}-detected regions
+recovered among the 75 named genes overlapping \AP{}-detected regions
 (Supplementary Table~S1).}
 \label{fig:functional}
 \end{figure}

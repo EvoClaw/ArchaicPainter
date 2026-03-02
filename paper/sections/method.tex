@@ -3,9 +3,11 @@
 \subsection*{The \AP{} Hidden Markov Model}
 
 \paragraph{Overview.}
-\AP{} infers archaic introgression at haplotype resolution by extending the
-Li \& Stephens (2003) haplotype copying model~\citep{li2003modeling} to include
-archaic reference genomes as competing ancestry sources.
+\AP{} infers archaic introgression at haplotype resolution using a three-state
+local ancestry HMM whose transition probabilities are parameterized by
+the Li \& Stephens (2003) tract-length formulation~\citep{li2003modeling},
+adapted here so that hidden states represent \emph{ancestry categories}
+(AMH, NEA, DEN) rather than individual reference haplotypes.
 The core insight is coalescent-theoretic: a modern human haplotype segment that traces
 ancestry to an archaic hominin via introgression coalesces with the archaic reference
 at time $t_\mathrm{admixture} \approx 1{,}724$ generations ($\sim$50 kya), whereas a
@@ -15,9 +17,14 @@ Under a Poisson recombination model, the expected tract length scales as $1/t$ M
 yielding an 11-fold difference in expected haplotype match lengths
 ($\approx$58 kb for introgressed versus $\approx$5 kb for non-introgressed haplotypes
 at a typical recombination rate of 1~cM/Mb).
-\AP{} exploits this \emph{match-length signal} via exponential transition
-probabilities rather than the allele density signal used by existing tools
-(Figure~1).
+\AP{} exploits this \emph{match-length signal} by parameterizing the
+archaic-state persistence probability using $t_\mathrm{admixture}$
+(encoding the $\approx$58-kb introgressed tract length),
+while the AMH background rate is set by the expected inter-introgression
+spacing ($d_\mathrm{AMH} \approx 2.9$~Mb) rather than by $t_\mathrm{split}$
+directly; the 11-fold ratio provides the conceptual motivation for the
+length-based approach rather than being operationalized as two explicit
+scale parameters in the model (Figure~1).
 Methods such as HMMix~\citep{skov2018detecting}, DAIseg~\citep{planche2024daiseg},
 and IBDmix~\citep{chen2020identifying} model archaic introgression via Poisson
 counts of archaic-specific alleles within sliding windows, an architecture that
@@ -59,38 +66,73 @@ mismatches are informative and the standard Li \& Stephens emission is used:
   (1-\theta)[a_i = g_i^\mathrm{arch}] + \theta[a_i \neq g_i^\mathrm{arch}],
   \label{eq:emiss_nea_std}
 \end{equation}
-where $\theta = 0.01$ and $g_i^\mathrm{arch}$ is the archaic reference allele.
+where $\theta = 0.01$ is the per-site mismatch probability between the query
+haplotype and the archaic reference (a composite parameter capturing
+sequencing error, ancient DNA damage, and residual reference--donor
+divergence in simulation; not the germline mutation rate $\mu \approx 10^{-8}$),
+and $g_i^\mathrm{arch}$ is the archaic reference allele at site $i$.
 On the 50-replicate benchmark this formulation achieves F1 $= 0.480 \pm 0.095$.
 
-\emph{Positive-only emission (real data).}
+\emph{Positive-only log-score (real data).}
 Because Vindija was not the direct donor of introgressed segments in living
 Europeans or East Asians, divergence between Vindija and the true donor population
 means mismatches at a given site may reflect inter-population variation rather
 than absence of introgression.
-We therefore treat mismatches as uninformative for real-data analyses:
+We therefore down-weight mismatch evidence via the following log-scoring function
+for real-data analyses:
 \begin{equation}
-  P(a_i \mid S_\mathrm{NEA}, \text{real}) =
+  \ell(a_i \mid S_\mathrm{NEA}, \text{real}) =
   \begin{cases}
-    1 - \theta & \text{if } a_i \text{ matches } g_i^\mathrm{arch}, \\
-    \tfrac{1}{2}        & \text{otherwise.}
+    \log(1 - \theta) & \text{if } a_i \text{ matches } g_i^\mathrm{arch}, \\
+    \log\!\tfrac{1}{2}        & \text{otherwise.}
   \end{cases}
   \label{eq:emiss_nea_pos}
 \end{equation}
-Setting $P(\text{mismatch} \mid S_\mathrm{NEA}) = 1/2$ substantially
-reduces the log-odds penalty for mismatches relative to the standard model
-($\log\theta = \log 0.01$), making the NEA state largely agnostic to
-disagreements.
-Note that this is not strictly ``zero log-odds'' relative to the AMH state,
-since the AMH emission uses $f^\mathrm{YRI}_i$ rather than $1/2$; however,
-for sites with archaic minor allele (low $f^\mathrm{YRI}$), the AMH emission
-at a mismatch site ($P = 1 - f^\mathrm{YRI} \approx 1$) also approximates 1,
-so the relative contribution to the NEA/AMH log-odds ratio is negligible.
-In practice this mode is appropriate whenever reference--donor divergence
-means that mismatches cannot be reliably attributed to archaic absence.
-Critically, the standard and positive-only emission models are \emph{not}
-interchangeable: on simulation, the positive-only model achieves F1 $= 0.000$
-because mismatches carry essential discriminative information when the reference
-exactly matches the source.
+\textbf{Mathematical note (important limitation).}
+These log-scores do \emph{not} define a normalized probability distribution:
+$e^{\log(1-\theta)} + e^{\log(1/2)} = (1-\theta) + 1/2 > 1$ for $\theta < 1/2$.
+Because the excess mass $(1-\theta) + 1/2 - 1 \approx 0.49$ constitutes a
+per-site additive bonus in log-space for the NEA state, the Viterbi path is
+\emph{biased toward the NEA state} relative to a properly normalized model:
+a run of $L$ sites in the NEA state accumulates an extra log-score of
+$\approx 0.49 L$ compared to a normalized model.
+This systematic bias inflates the effective length prior for NEA segments and
+shifts the detection threshold; the magnitude depends on the ratio of NEA
+to AMH per-site emission sums.
+Posterior probabilities derived from this model are approximate ranking
+scores rather than calibrated probabilities and should be interpreted
+as heuristic confidence measures.
+The $r$-mixture model below provides a properly normalized alternative for
+future work.
+
+A properly normalized alternative is the $r$-mixture model:
+\begin{align}
+  P(a_i = \text{match} \mid S_\mathrm{NEA}, r) &= r(1-\theta) + (1-r)/2, \nonumber \\
+  P(a_i = \text{mismatch} \mid S_\mathrm{NEA}, r) &= r\theta + (1-r)/2,
+  \label{eq:r_mixture}
+\end{align}
+which sums to 1 for all $r \in [0,1]$, reduces to the standard bidirectional
+model at $r=1$, and to a fully uninformative emission ($P=1/2$ for both outcomes)
+at $r=0$.
+The log-score in Equation~\eqref{eq:emiss_nea_pos} approximates the $r$-mixture in
+the regime where mismatch evidence is strongly suppressed (small $r$) while match
+evidence is retained from Equation~\eqref{eq:emiss_nea_std}.
+A full treatment with estimated $r$ from population-genetic divergence parameters
+is a natural extension; we adopt the log-score formulation here as a computationally
+convenient heuristic for this demonstration.
+
+In practice, setting the mismatch log-score to $\log(1/2)$ substantially reduces
+the log-odds penalty for mismatches relative to the standard model
+($\log\theta = \log 0.01 \approx -4.6$ vs.\ $\log(1/2) \approx -0.69$),
+making the NEA state largely agnostic to disagreements.
+Note that mismatch is not strictly neutral relative to AMH:
+the AMH emission uses $f^\mathrm{YRI}_i$, so the log-odds at a mismatch site equals
+$\log(1/2) - \log(1 - f^\mathrm{YRI})$, which is mildly negative (weak evidence
+against NEA) for typical derived-allele frequencies.
+Critically, the standard and positive-only models are \emph{not} interchangeable:
+on simulation, the positive-only model achieves F1 $= 0.154$ versus $0.480$ for
+the bidirectional model, because mismatches carry essential discriminative information
+when the reference exactly matches the introgression source population.
 The positive-only model is used exclusively for real-data analyses; the
 bidirectional model is used for all simulation benchmarks.
 
@@ -159,7 +201,10 @@ Twenty replicates were run (seeds 100--119, 5~Mb, 20 query haplotypes).
 \emph{F1}: true positive = predicted segment overlaps $\geq 1$~bp of a ground-truth segment
 (lenient, following Sankararaman et al.~\citeyear{sankararaman2014genomic};
 stricter 50\% and 80\% reciprocal-overlap results in Supplementary Table~S4).
-\emph{AUPRC}: precision-recall curve integrated over posterior probability thresholds.
+\emph{AUPRC}: precision-recall curve integrated over Viterbi log-score thresholds
+(valid as a ranking metric for simulation, where the bidirectional emission is a
+proper probability model; for real-data positive-only scores the curve measures
+ranking quality but not probability calibration).
 \emph{Attribution accuracy}: fraction of predicted NEA (or DEN) segments overlapping
 a same-type ground-truth segment; \emph{cross-contamination}: fraction overlapping
 the opposite-type ground truth.
@@ -172,7 +217,7 @@ the opposite-type ground truth.
 Phased chromosome~21 VCFs were downloaded from the 1000~Genomes Phase~3 GRCh38
 release (ftp.1000genomes.ebi.ac.uk)~\citep{genomes20151000}.
 We analyzed 20 CEU and 20 CHB individuals (40 phased haplotypes each)
-across chr21:10,000,000--48,000,000 (38~Mb).
+across chr21:10,000,000--46,709,983 (GRCh38 chromosome end; $\approx$36.7~Mb).
 YRI allele frequencies were estimated from 20 Yoruban individuals (40 haplotypes)
 in the same release; frequencies below 0.025 were floored at 0.025 to prevent
 emission instability from singletons.
@@ -182,6 +227,11 @@ The Vindija~33.19 diploid VCF~\citep{prufer2017high} was downloaded from the
 MPI EVAN repository, converted from GRCh37 to GRCh38 via CrossMap~v0.7.0~\citep{zhao2014crossmap},
 and merged with the 1000GP VCF using allele-aware orientation correction
 (swapped REF/ALT codes were inverted before computing match scores).
+Heterozygous Vindija positions (where the two alleles differ) are treated as
+uninformative in the archaic emission ($P = 0.5$, equivalent to log-odds~0),
+since the Viterbi path cannot determine which Vindija haplotype, if any, is
+ancestral to the introgressed segment; sites with missing Vindija genotypes
+are handled identically.
 After intersection and quality filtering, 1{,}036 (CEU) and 906 (CHB) informative
 SNPs remained ($\approx$27 SNPs/Mb), substantially fewer than in simulation
 ($\approx$320 SNPs/Mb) due to the limited callable regions of the Vindija genome.
@@ -189,7 +239,7 @@ The median inter-SNP distance ($\approx$37~kb) retains sensitivity to tracts
 $\geq 50$~kb but reduces boundary resolution relative to simulation.
 
 \paragraph{Ancestry fraction.}
-Per-haplotype Neanderthal ancestry fraction is the proportion of the 38-Mb window
+Per-haplotype Neanderthal ancestry fraction is the proportion of the 36.7-Mb analysis window
 covered by NEA-state Viterbi calls.
 Population estimates are mean $\pm$ SD across the 40 haplotypes.
 
@@ -200,7 +250,11 @@ The three-state HMM was evaluated on the two-source simulation (20 replicates,
 5~Mb, 2\% NEA + 1\% DEN) described above, using a simulated Denisovan reference
 matched to the true donor.
 Real-data Denisovan attribution using the Altai genome is deferred to future work
-owing to the absence of a GRCh38-compatible high-coverage Denisovan VCF for chr21.
+pending integration of a phased, high-coverage Denisovan haplotype reference for
+GRCh38 that satisfies the phased-VCF input requirements of the pipeline;
+published GRCh38-aligned Denisovan variant sets currently available (e.g., UCSC
+\texttt{denisovan.hg38.filt.vcf.gz}) are unphased and would require additional
+phasing or imputation steps before use with \AP{}.
 
 \subsection*{Functional Annotation}
 

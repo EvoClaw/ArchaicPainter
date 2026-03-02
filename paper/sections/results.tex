@@ -1,27 +1,23 @@
 \section*{Results}
 
-\subsection*{Haplotype match-length signal dramatically outperforms density-based inference in simulation}
+\subsection*{Simulation validation: ArchaicPainter performance and ablation analysis}
 
-We benchmarked \AP{} against a Poisson density baseline across 50 independent
-simulation replicates (msprime v1.3.3~\citep{baumdicker2022efficient}, 5~Mb per replicate, 20~CEU query haplotypes,
-2\% Neanderthal admixture, seeds 42--91).
+We evaluated \AP{} across 50 independent simulation replicates
+(msprime v1.3.3~\citep{baumdicker2022efficient}, 5~Mb per replicate,
+20~CEU query haplotypes, 2\% Neanderthal admixture, seeds 42--91).
 \AP{} with the standard bidirectional emission achieved a mean segment-level
-F1 of $0.480 \pm 0.095$ (95\% CI $[0.454, 0.506]$; AUPRC = 0.577),
-compared to $0.0085 \pm 0.003$ (AUPRC = 0.147) for the Poisson density baseline,
-a $56\times$ F1 improvement (Wilcoxon signed-rank test, $p = 8.9 \times 10^{-16}$;
-Figure~2, Table~1).
-This gap directly demonstrates the discriminative power of the haplotype
-match-length signal: both methods receive the same archaic allele-frequency
-information, but the Poisson baseline discards all spatial correlations
-between adjacent introgressed positions.
-At the mathematical level, this performance difference is a direct consequence
-of the $\sim$11$\times$ coalescent tract-length ratio
-($t_\mathrm{split}/t_\mathrm{admixture} \approx 11$), which the Poisson emission
-architecture leaves entirely unexploited.
-
-\AP{} AUPRC of 0.577 versus 0.147 for the baseline further shows that posterior
-probabilities in \AP{} provide calibrated segment rankings across operating points,
-not merely a single threshold advantage.
+F1 of $0.480 \pm 0.095$ (95\% CI $[0.454, 0.506]$; AUPRC $= 0.577$;
+Figure~2).
+This performance confirms that encoding haplotype match-length structure in the
+HMM transition probabilities yields reliable segment detection under idealised
+simulation conditions (reference matching true donor, 1 cM/Mb recombination rate,
+zero sequencing error beyond the $\theta=0.01$ emission parameter).
+\AP{} AUPRC of 0.577 indicates that posterior log-scores provide useful
+segment rankings across operating points (though scores from the positive-only
+model used on real data are approximate heuristics rather than calibrated
+probabilities; see Methods).
+Direct comparison with established tools such as HMMix and DAIseg
+remains an important direction for future work.
 
 \subsection*{Ablation analysis: reference fidelity is critical; segment merging is not}
 
@@ -33,15 +29,14 @@ This null result is informative: the exponential transition model localizes
 segment boundaries adequately in simulation, and gap-filling is a real-data-specific
 accommodation for reference sparsity rather than a core performance driver.
 
-The positive-only emission ablation revealed the critical importance of reference
-fidelity.
-Treating mismatches with the archaic reference as uninformative caused a complete
-performance collapse to F1 = $0.000$ across all 50 replicates
-($p = 8.9 \times 10^{-16}$ versus the standard model).
+The positive-only emission ablation confirmed the importance of reference fidelity.
+Down-weighting mismatches reduced simulation performance to F1 $= 0.154 \pm 0.079$
+versus $0.480$ for the bidirectional model ($p = 8.9 \times 10^{-16}$, Wilcoxon signed-rank test,
+$n = 50$).
 On simulation, the reference is drawn from the same population as the true introgression
 source, so every mismatch between query and archaic reference is evidence for the AMH
-state; suppressing this signal eliminates the model's discriminative capacity.
-This result is not a failure of the positive-only model but a confirmation of its
+state; suppressing this signal substantially reduces discriminative capacity.
+This performance gap is not a failure of the positive-only model but a confirmation of its
 correct domain of applicability: it is appropriate only when the reference diverges
 from the true donor (as in real data), not when they are the same population (simulation).
 The emission model selection is therefore a fundamental design decision that must
@@ -49,23 +44,25 @@ track the degree of reference--donor alignment.
 
 \subsection*{\AP{} detects biologically coherent Neanderthal ancestry at per-haplotype resolution}
 
-Applied to chromosome~21 (chr21:10--48~Mb, 38~Mb euchromatic region) from the
-1000~Genomes Project Phase~3 GRCh38 release, \AP{} detected 228 introgressed segments
-across 40~CEU haplotypes (mean ancestry fraction $2.28\% \pm 1.22\%$;
-median segment length 112.6~kb) and 251 segments across 40~CHB haplotypes
-($2.09\% \pm 0.77\%$; median 89.9~kb) (Table~2; Figure~3).
-These fractions agree with published estimates of $\approx$2\% Neanderthal ancestry
-in non-African populations derived from coalescent and frequency-spectrum
-analyses~\citep{prufer2014complete, sankararaman2014genomic}, validating the
-method's calibration on real data where ground truth is unavailable.
+Applied to chromosome~21 (chr21:10--46.7~Mb, GRCh38; $\approx$36.7~Mb euchromatic region) from the
+1000~Genomes Project Phase~3 GRCh38 release, \AP{} detected 187 introgressed segments
+across 40~CEU haplotypes (mean ancestry fraction $1.10\% \pm 0.60\%$;
+median segment length 56.7~kb) and 208 segments across 40~CHB haplotypes
+($0.98\% \pm 0.52\%$; median 27.5~kb) (Table~2; Figure~3).
+These fractions are broadly consistent with published estimates of $\sim$1--2\%
+Neanderthal ancestry in non-African populations~\citep{prufer2014complete, sankararaman2014genomic}.
+Because the positive-only emission used on real data is a heuristic log-score
+rather than a calibrated probability model, these fractions should be interpreted
+as order-of-magnitude estimates rather than calibrated posteriors;
+the exact values depend on the emission weighting and post-processing thresholds.
 
 Population-level ancestry fractions did not differ significantly between CEU and CHB
-(Mann--Whitney $U$ test, $p = 0.66$), consistent with a shared ancestral
+(Mann--Whitney $U$ test, $p = 0.31$), consistent with a shared ancestral
 admixture event predating the European--East Asian split.
-However, CEU showed substantially higher inter-haplotype variance
-(coefficient of variation: 54\%) than CHB (37\%),
-potentially reflecting the deeper European post-OOA bottleneck amplifying
-stochastic drift of introgressed haplotype frequencies.
+However, CEU and CHB showed comparable inter-haplotype variance
+(coefficient of variation: 55\% vs.~53\%), suggesting that the
+degree of stochastic drift in introgressed haplotype frequencies is
+similar between these two non-African populations.
 The established chr21:$\sim$14~Mb Neanderthal introgression hotspot was
 detected in both populations~\citep{vernot2014resurrecting, sankararaman2014genomic, vernot2016excavating},
 serving as a positive landmark for real-data evaluation.
@@ -75,19 +72,30 @@ serving as a positive landmark for real-data evaluation.
 Comparing \AP{} and IBDmix on chr21:10--20~Mb (10~Mb, 20~CEU individuals, LOD $\geq 3$)
 highlighted fundamentally different operating characteristics.
 IBDmix called 345 segments across 20 diploid individuals (17.3 per individual;
-mean length 15.2~kb; median 11.5~kb; diploid ancestry fraction 2.62\%).
-\AP{} called 37 segments across 40 haplotypes (0.93 per haplotype; mean length
-234~kb; haploid ancestry fraction 2.17\%).
-The different segment counts partly reflect the diploid-versus-haploid unit of analysis (IBDmix: per-individual diploid counts; \AP{}: per-phased-haplotype counts). Ancestry fractions agreed within 0.45 percentage points, while segment counts
-differed $\sim$9-fold and mean segment lengths differed $\sim$15-fold.
-In total, 25.2\% of IBDmix segments overlapped at least one \AP{} segment.
+mean length 15.2~kb; median 11.5~kb).
+The IBDmix \emph{diploid} ancestry fraction (total introgressed bp across both
+haplotypes of all individuals, divided by $2 \times N_\text{ind} \times
+\text{window\_bp}$) was 2.62\%.
+\AP{} called 50 segments across 40 haplotypes (1.25 per haplotype; mean length
+69.4~kb); the \emph{per-haplotype} ancestry fraction
+(introgressed bp per haplotype $\div$ window bp) was 0.87\%.
+These two fractions use different denominators and units of analysis
+(diploid individual vs.\ phased haplotype) and should not be directly compared;
+a rough diploid-equivalent for \AP{} can be obtained as $2 \times 0.87\% = 1.74\%$
+under the assumption that the two haplotypes of each individual carry independent
+introgressed segments, but this conversion is approximate.
+Segment counts differed $\sim$7-fold and mean segment lengths $\sim$4.6-fold,
+reflecting the fundamentally different detection sensitivities of the two methods.
+In total, 31.0\% of IBDmix segments (107/345) overlapped at least one \AP{} segment;
+conversely, 95.9\% of \AP{} segments in this region (47/49) overlapped at least one IBDmix segment.
 This complementarity is architecturally principled: IBDmix uses site-level
 LOD scores to achieve maximum recall of short tracts, while \AP{} requires
 an extended haplotype match across many kilobases, trading short-segment
 sensitivity for long-haplotype specificity and per-haplotype resolution.
 The two methods therefore answer distinct biological questions:
 IBDmix asks ``which sites are introgressed?''; \AP{} asks ``which haplotypes
-carry long introgressed blocks and at what posterior probability?''
+carry long introgressed blocks and with what haplotype-level confidence?''\footnote{Throughout, \emph{confidence} refers to the Viterbi log-score under the positive-only
+emission, not a calibrated posterior probability; see Methods.}
 
 \subsection*{Three-state HMM achieves proof-of-concept Neanderthal--Denisovan source attribution}
 
@@ -129,23 +137,32 @@ on a single CPU core.
 The empirical scaling exponent was 1.21, close to the theoretical $O(n)$.
 The mild super-linear component likely arises from the expanding number of
 segregating sites as the query panel grows, rather than algorithmic inefficiency.
-Extrapolating to a full genome-wide analysis ($\approx$3 Gb, at the chr21
-informative-site density of 27 SNPs/Mb) for $n = 1{,}000$ haplotypes
-yields an estimated $\sim$13 cpu-hours on a single core, well within reach
-of standard high-performance computing resources, enabling population-scale archaic
-introgression mapping in the 1000~Genomes Project and comparable cohorts.
+Extrapolating to a full genome ($\approx$3 Gb) for $n = 1{,}000$ haplotypes:
+using bp-based scaling from the simulation benchmark yields $\sim$19 cpu-hours;
+using per-site scaling at the chr21 informative-site density (27 SNPs/Mb, typical
+for a single archaic reference) yields $\sim$1 cpu-hour, since Vindija's callable
+sites are far sparser than simulation segregating sites.
+Both figures are within reach of standard HPC resources and support
+population-scale archaic introgression mapping.
 
 \subsection*{Introgressed chr21 regions overlap adaptive immunity and neurological disease genes}
 
-Intersecting the 40 merged introgressed regions (10.74~Mb total) with hg38 gene
-annotations identified 79 named genes (Figure~5; Supplementary Table~S1).
+Intersecting the 52 merged introgressed regions (9.66~Mb total) with hg38 gene
+annotations identified 75 named genes (Figure~5; Supplementary Table~S1).
 Seven of 16 previously published chr21 adaptive introgression candidates were
 recovered (recall 43.8\%), including \emph{DYRK1A} (neurodevelopment and autism;
 CEU-specific), \emph{RUNX1} (hematopoiesis and leukemia risk; CHB-specific),
 \emph{B3GALT5} (blood group antigen glycosylation; CHB-specific), and
-\emph{LIPI} (triglyceride hydrolysis; shared between both populations),
-confirming that \AP{} recovers known adaptive introgression hotspots
-without any prior functional annotation.
+\emph{LIPI} (triglyceride hydrolysis; shared between both populations).
+We note that the merged introgressed regions span approximately 9.66~Mb of the
+36.7-Mb analysis window ($\approx$26\%), so some gene overlap is expected
+by chance; formal statistical enrichment (permutation tests against matched
+genomic regions controlling for gene density and mappability) would be required
+to establish significance beyond background expectation.
+These results should therefore be interpreted as an illustrative demonstration
+that \AP{}'s haplotype match-length signal recovers previously reported
+candidate loci in an unsupervised manner, rather than as a rigorous
+test of adaptive introgression.
 
 The most notable finding was a complete type-I and type-II interferon
 receptor gene cluster at chr21:33.2--33.5~Mb: \emph{IFNAR1}, \emph{IFNAR2},
@@ -157,9 +174,9 @@ antiviral and anti-inflammatory signaling.
 The detection of this cluster by \AP{} from haplotype match-length patterns alone
 is consistent with published evidence that archaic introgression at this locus
 contributes to elevated interferon response capacity in European
-populations~\citep{dannemann2017contribution}, and demonstrates that the
-method's match-length signal is sufficient to rediscover functional adaptive
-introgression candidates in an unsupervised manner.
+populations~\citep{dannemann2017contribution}, and illustrates that the
+method's match-length signal can rediscover known functionally annotated
+archaic introgression candidates in an unsupervised manner.
 
 Population-specific gene overlaps further highlight divergent adaptive landscapes:
 CEU uniquely spanned \emph{BACE2} (Alzheimer-pathway beta-secretase, chr21 paralog
@@ -170,7 +187,8 @@ CHB uniquely included \emph{ADAMTS5}, a metalloproteinase with replicated GWAS
 signals for osteoarthritis, and \emph{RCAN1} (regulator of calcineurin-1,
 associated with cardiac hypertrophy and Down syndrome cognitive phenotypes).
 These population differences, combined with the known geographic structure of
-adaptive introgression~\citep{vernot2016excavating}, suggest that
-specific Neanderthal haplotypes may have experienced differential positive selection
-pressures in European versus East Asian populations tracking their distinct
-pathogen exposure, dietary, and clinical risk environments.
+adaptive introgression~\citep{vernot2016excavating}, suggest candidate loci
+for differential archaic haplotype retention in European versus East Asian
+populations; formal tests of positive selection at these loci (e.g., extended
+haplotype homozygosity tests or dN/dS analyses) are outside the scope of this
+methodological paper but represent a natural follow-up direction.

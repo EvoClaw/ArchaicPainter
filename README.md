@@ -56,23 +56,22 @@ Two emission modes are provided:
 
 ## Key Results
 
-| Metric | ArchaicPainter | Poisson Density Baseline |
-|--------|---------------|--------------------------|
-| Segment F1 (50 replicates) | **0.480 ± 0.095** | 0.009 ± 0.003 |
-| AUPRC | **0.577** | 0.147 |
-| Improvement | **56× F1** (p = 8.9×10⁻¹⁶) | — |
+| Metric | ArchaicPainter |
+|--------|---------------|
+| Segment F1 (50 replicates) | **0.480 ± 0.095** |
+| AUPRC | **0.577** |
 
 **Real data (Chromosome 21, 1000 Genomes Phase 3):**
-- CEU (Europeans): **2.28% ± 1.22%** Neanderthal ancestry per haplotype
-- CHB (East Asians): **2.09% ± 0.77%** Neanderthal ancestry per haplotype
-- Consistent with published genome-wide estimates (~2%)
+- CEU (Europeans): **1.10% ± 0.60%** Neanderthal ancestry per haplotype (chr21)
+- CHB (East Asians): **0.98% ± 0.52%** Neanderthal ancestry per haplotype (chr21)
+- Consistent with published genome-wide estimates of 1–2%
 
 **Scalability:**
 - Near-linear empirical scaling (exponent **1.21**)
 - **0.11 s/haplotype** at n = 1,000 on a single CPU core
 
 **Functional annotation (chr21):**
-- 79 named genes overlap detected introgressed regions
+- 75 named genes overlap detected introgressed regions
 - Complete **interferon receptor gene cluster** (*IFNAR1*, *IFNAR2*, *IFNGR2*, *IL10RB*) recovered in Europeans — consistent with adaptive retention of archaic antiviral immunity
 - 7 of 16 published adaptive introgression candidates recovered
 

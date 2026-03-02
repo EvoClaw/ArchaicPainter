@@ -1,20 +1,25 @@
 \section*{Conclusion}
 
-We have introduced ArchaicPainter (\AP{}), to our knowledge the first application
-of the Li \& Stephens haplotype copying model to archaic hominin introgression detection.
+We have introduced ArchaicPainter (\AP{}), a Hidden Markov Model that adapts the
+tract-length transition structure of the Li \& Stephens framework to archaic hominin
+introgression detection, with hidden states representing ancestry categories rather
+than individual reference haplotypes.
 By encoding coalescent match-length statistics in the emission and transition
 probabilities of a three-state HMM, \AP{} exploits an $\sim$11-fold
 coalescent tract-length contrast between introgressed and non-introgressed segments
 that all existing density-based approaches leave unexploited.
 Across 50 simulation replicates with known ground truth, this architectural
-choice translates into a $56\times$ F1 advantage over a Poisson density baseline,
-providing a controlled quantification of the discriminative value that
-haplotype match-length structure adds beyond variant counting.
+choice achieves F1 $= 0.480 \pm 0.095$ (AUPRC $= 0.577$) across 50 simulation
+replicates, validating the discriminative value of encoding match-length structure.
 
-On real 1000~Genomes Project chromosome~21 data, \AP{} detects
-$\sim$2.1--2.3\% per-haplotype Neanderthal ancestry in European and East Asian
-populations at a median segment resolution of $\sim$90--113~kb, consistent
-with published genome-wide estimates.
+On real 1000~Genomes Project chromosome~21 data, \AP{} identifies
+$\sim$1.1\% (CEU) and $\sim$1.0\% (CHB) per-haplotype Neanderthal-like
+haplotype coverage at a median segment resolution of $\sim$28--57~kb,
+broadly consistent in order of magnitude with published genome-wide estimates of 1--2\%.
+Because real-data calls use a heuristic positive-only log-score (not a calibrated
+probability model), these fractions are indicative estimates rather than
+posterior-derived quantities; they also reflect lower recall for short segments
+under sparse informative-site coverage ($\sim$27 SNPs/Mb on chr21).
 Functional annotation of detected regions recovers known adaptive introgression
 targets including the complete type-I and type-II interferon receptor gene cluster
 in an unsupervised manner, corroborating published evidence for adaptive retention

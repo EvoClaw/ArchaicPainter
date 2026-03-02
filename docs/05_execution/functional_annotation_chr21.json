@@ -1,10 +1,10 @@
 {
   "summary": {
-    "ceu_segments": 228,
-    "chb_segments": 251,
-    "union_merged_regions": 40,
-    "total_introgressed_bp": 10737559,
-    "median_region_kb": 143.451
+    "ceu_segments": 187,
+    "chb_segments": 208,
+    "union_merged_regions": 52,
+    "total_introgressed_bp": 9657933,
+    "median_region_kb": 107.16
   },
   "genes_in_introgressed_regions": {
     "ceu_named": [
@@ -20,8 +20,6 @@
       "SOD1",
       "SCAF4",
       "HUNK",
-      "MIS18A",
-      "MRAP",
       "IFNAR2",
       "IL10RB",
       "IFNAR1",
@@ -41,9 +39,6 @@
       "UMODL1",
       "UMODL1-AS1",
       "ABCG1",
-      "TFF3",
-      "TFF2",
-      "TFF1",
       "TMPRSS3",
       "UBASH3A",
       "RSPH1",
@@ -145,7 +140,6 @@
       "LIPI",
       "LSS",
       "MCM3AP",
-      "MIS18A",
       "MRAP",
       "NDUFV3",
       "NRIP1",
@@ -171,9 +165,6 @@
       "SPATC1L",
       "SRSF9P1",
       "SUMO3",
-      "TFF1",
-      "TFF2",
-      "TFF3",
       "TIAM1",
       "TMPRSS15",
       "TMPRSS3",
@@ -309,7 +300,6 @@
     "SOD1",
     "SCAF4",
     "HUNK",
-    "MIS18A",
     "MRAP",
     "URB1",
     "IFNAR2",
@@ -336,9 +326,6 @@
     "UMODL1",
     "UMODL1-AS1",
     "ABCG1",
-    "TFF3",
-    "TFF2",
-    "TFF1",
     "TMPRSS3",
     "UBASH3A",
     "RSPH1",
@@ -531,20 +518,11 @@
       "known_trait": null
     },
     {
-      "gene": "MIS18A",
-      "start": 32268227,
-      "end": 32279049,
-      "class": "protein_coding_or_named",
-      "pop": "CEU",
-      "in_ai_literature": false,
-      "known_trait": null
-    },
-    {
       "gene": "MRAP",
       "start": 32291812,
       "end": 32312290,
       "class": "protein_coding_or_named",
-      "pop": "both",
+      "pop": "CHB",
       "in_ai_literature": false,
       "known_trait": null
     },
@@ -795,33 +773,6 @@
       "gene": "ABCG1",
       "start": 42199688,
       "end": 42297244,
-      "class": "protein_coding_or_named",
-      "pop": "CEU",
-      "in_ai_literature": false,
-      "known_trait": null
-    },
-    {
-      "gene": "TFF3",
-      "start": 42312052,
-      "end": 42315336,
-      "class": "protein_coding_or_named",
-      "pop": "CEU",
-      "in_ai_literature": false,
-      "known_trait": null
-    },
-    {
-      "gene": "TFF2",
-      "start": 42346356,
-      "end": 42350994,
-      "class": "protein_coding_or_named",
-      "pop": "CEU",
-      "in_ai_literature": false,
-      "known_trait": null
-    },
-    {
-      "gene": "TFF1",
-      "start": 42362281,
-      "end": 42366535,
       "class": "protein_coding_or_named",
       "pop": "CEU",
       "in_ai_literature": false,

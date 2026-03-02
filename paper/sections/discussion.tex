@@ -8,26 +8,18 @@ to the archaic introgression detection problem.
 The central theoretical argument --- that an 11$\times$ coalescent tract-length
 contrast between introgressed and non-introgressed segments should translate into
 substantial detection gains --- is borne out empirically: \AP{} achieves F1 $=
-0.480 \pm 0.095$ compared to $0.009 \pm 0.003$ for a Poisson density baseline
-($56\times$ improvement), directly attributable to the match-length signal
-captured in the HMM transition matrix.
+0.480 \pm 0.095$ (AUPRC $= 0.577$), attributable to the match-length
+signal encoded in the HMM transition matrix.
 This gap is not merely a numerical result; it suggests that archaic introgression
 methods based primarily on density-counting principles may operate with a
 significant power deficit by discarding the linkage disequilibrium structure
 that encodes admixture history --- the same structure that has driven
 modern local ancestry inference for two decades.
 
-The $56\times$ F1 advantage should be interpreted carefully.
-It is measured against a simplified Poisson density baseline that represents
-the density-counting principle, not against HMMix or DAIseg directly; the latter
-employ HMMs with their own transition structures and may capture some spatial
-correlation implicitly.
-Nevertheless, the density-counting principle is the foundational design choice
-of all existing archaic introgression HMMs, and the scale of the F1 gap strongly
-suggests that explicit match-length modeling deserves serious investigation
-in the context of more sophisticated reference tools.
 We regard the 50-replicate simulation benchmark as a controlled demonstration
-of the principle, sufficient for publication at PLOS Genetics as a proof of concept,
+of the principle; head-to-head comparison with HMMix or DAIseg, which employ
+their own HMM transition structures, remains important future work.
+This simulation study is
 and defer direct head-to-head F1 benchmarking against HMMix and DAIseg to
 future work with access to those tools' code and standardized benchmarking
 frameworks.
@@ -38,14 +30,16 @@ A recurring challenge in applying haplotype-based methods to ancient DNA analysi
 is reference--donor divergence: the available archaic reference genome (e.g.,
 Vindija Neanderthal 33.19) is an imperfect proxy for the true introgressing
 population.
-\AP{} addresses this via the positive-only emission mode, which treats mismatches
-as uninformative rather than penalizing them.
-The ablation result (F1 $= 0.000$ under positive-only on simulation, where the
-reference exactly matches the donor) provides a precise characterization of when
-each mode should be used: the standard bidirectional model is optimal whenever the
-reference tracks the true donor, while the positive-only mode avoids false negatives
-introduced when mismatches between the query and an imperfect reference are
-incorrectly interpreted as evidence against introgression.
+\AP{} addresses this via the positive-only log-score mode, which strongly
+down-weights mismatch evidence (setting the mismatch log-score to $\log(1/2)$
+rather than the standard $\log\theta \approx -4.6$) while retaining positive
+match evidence.
+The ablation result (F1 $= 0.154$ vs.\ $0.480$ for standard under positive-only on
+simulation, where the reference exactly matches the donor) provides a precise
+characterization of when each mode should be used: the standard bidirectional model
+is optimal whenever the reference tracks the true donor, while the positive-only mode
+avoids false negatives introduced when mismatches between the query and an imperfect
+reference are incorrectly interpreted as evidence against introgression.
 
 This emission mode switch is conceptually related to approaches in ancient DNA
 analysis that handle post-mortem damage and reference bias through asymmetric
@@ -71,7 +65,7 @@ introgressed segment, coupling introgressed haplotype identity across individual
 for population-level haplotype network analysis, and in principle integrating
 with modern phasing-based methods such as SHAPEIT~\citep{delaneau2019accurate}
 for jointly phased ancient--modern data.
-The 37 per-haplotype segments detected by \AP{} on chr21:10--20~Mb versus
+The 50 per-haplotype segments detected by \AP{} on chr21:10--20~Mb versus
 345 diploid segments by IBDmix at the same LOD threshold are not simply two
 points on the same receiver operating characteristic curve; they represent
 fundamentally different units of biological measurement.
@@ -142,7 +136,7 @@ emission evidence for source disambiguation.
 Improving attribution accuracy will require one or more of:
 (1) higher-quality phased Denisovan reference genomes
 (the Altai Denisovan~\citep{meyer2012high} is the only available genome and is
-from a single individual on a small island),
+from a single individual excavated from Denisova Cave in the Altai Mountains of Siberia~\citep{reich2010genetic}),
 (2) leveraging reads from Denisovan-like populations (e.g., Papuans) as a panel of
 modern individuals with elevated DEN ancestry to substitute for a reference genome
 in a Li \& Stephens framework,
@@ -158,7 +152,7 @@ Several limitations of the current work merit explicit acknowledgment.
 
 First, our real-data analysis is restricted to chromosome~21.
 Chromosome~21 is the smallest human autosome and carries a relatively modest
-number of archaic-informative sites (1,036 Vindija-matching SNPs in 38~Mb,
+number of archaic-informative sites (1,036 Vindija-matching SNPs in 36.7~Mb,
 $\sim$27 SNPs/Mb), which is an order of magnitude below the simulation density
 ($\sim$320 SNPs/Mb).
 This informative site sparsity constrains segment resolution and likely reduces
@@ -166,21 +160,20 @@ F1 relative to simulation; a full genome-wide analysis would provide more inform
 sites per chromosome and allow assessment of \AP{} performance at the per-gene level.
 
 Second, no direct quantitative benchmark against HMMix or DAIseg was performed.
-The comparison to a Poisson density baseline is an isolating experiment for the
-match-length signal, not a competitive evaluation.
-Reviewers familiar with HMMix (which uses LD-aware transition parameters in a
-two-state HMM) may note that our baseline is deliberately simplified; a fair
-comparison with HMMix on identical test sets would require access to that tool's
-code and a jointly designed evaluation framework with matched parameters.
-We are transparent about this limitation and encourage future benchmarking studies
-to include \AP{} as a third point in this comparison.
+A fair comparison would require a jointly designed evaluation framework with
+matched parameters and input data; we are transparent about this limitation
+and regard head-to-head benchmarking as the most important next step for
+establishing \AP{}'s practical utility relative to established tools.
 
-Third, the positive-only emission mode used for real data has not been calibrated
-against a real-data ground truth.
-The decision to use positive-only is theoretically motivated (reference--donor
-divergence) and ablation-validated in simulation, but the optimal emission weight
-for Vindija's specific divergence from the introgressing Neanderthal population
-remains an open empirical question.
+Third, the positive-only emission mode used for real data is a heuristic
+log-score rather than a calibrated probability model.
+Because the match and mismatch log-scores do not sum to a valid probability
+distribution, the Viterbi path is biased towards the NEA state
+(see Methods), and reported ancestry fractions should be interpreted as
+order-of-magnitude estimates, not posterior-derived quantities.
+The optimal emission weighting for Vindija's specific divergence
+from the introgressing Neanderthal population, and whether the
+$r$-mixture model would shift reported fractions, remain open empirical questions.
 
 Fourth, the simulation demography uses a simplified single-pulse admixture model.
 Real admixture likely involved multiple waves~\citep{vernot2016excavating},

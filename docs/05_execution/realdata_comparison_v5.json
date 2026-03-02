@@ -1,0 +1,10 @@
+{
+  "region": "chr21:14,074,685-19,989,084",
+  "ibdmix_n": 345,
+  "ap_n_in_region": 50,
+  "ibdmix_pct_overlap_ap": 31.0,
+  "ap_pct_overlap_ibdmix": 94.0,
+  "ibdmix_overlapping": 107,
+  "ap_overlapping": 47,
+  "note": "IBDmix file covers chr21 14-20Mb (CEU20 samples). AP uses full chr21 v5 BED filtered to region."
+}

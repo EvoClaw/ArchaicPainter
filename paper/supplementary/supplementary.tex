@@ -5,7 +5,7 @@
 
 \begin{longtable}{llcc}
 \caption{Named genes overlapping ArchaicPainter-detected Neanderthal-introgressed
-regions on chromosome~21 (chr21:10--48~Mb, hg38). ``AI candidate'' indicates genes
+regions on chromosome~21 (chr21:10--46.7~Mb, hg38/GRCh38). ``AI candidate'' indicates genes
 appearing in the published list of 16 chr21 adaptive introgression candidates
 surveyed in this study. Population: CEU = European, CHB = East Asian.}
 \label{tab:genes} \\
@@ -116,7 +116,7 @@ $t_\mathrm{split}$ & 19,000 generations & $\sim$550 kya / 29 yr generation time 
 Match-length ratio & $11\times$ & $t_\mathrm{split} / t_\mathrm{admixture}$ \\
 Expected NEA segment & 58 kb & $1 / t_\mathrm{admixture}$ at 1 cM/Mb \\
 $\pi_\mathrm{NEA}$ prior & 0.02 & Published 2\% Neanderthal ancestry fraction \\
-$\theta_\mathrm{emit}$ & 0.01 & Per-site emission error / mutation rate \\
+$\theta_\mathrm{emit}$ & 0.01 & Per-site mismatch probability between query and archaic reference (captures sequencing error, ancient DNA damage, and reference--donor divergence; not the per-generation germline mutation rate $\mu \approx 10^{-8}$) \\
 Merge gap & 10 kb & Post-Viterbi gap filling (calibrated on simulation) \\
 Min segment & 10 kb & Post-Viterbi minimum segment filter \\
 \hline
@@ -142,37 +142,38 @@ Standard ArchaicPainter (default) & 0.480 & 0.095 \\
 CEU YRI reference (vs.\ standard YRI) & 0.507 & 0.092 \\
 $\theta_\mathrm{emit} \times 2$ (high, $\theta=0.02$) & 0.470 & 0.100 \\
 No segment merging & 0.488 & 0.095 \\
-Positive-only emission & 0.000 & 0.000 \\
+Positive-only emission & 0.154 & 0.079 \\
 \hline
 \end{tabular}
 \caption{Parameter sensitivity: all perturbations except positive-only emission
 yield F1 differences $<0.04$ from the default configuration, confirming robustness
 to parameter choices within the biologically motivated range.
-The positive-only collapse confirms its domain restriction (see main text).}
+The positive-only model achieves lower simulation F1 (0.154 vs.\ 0.480) because
+mismatch signals carry essential discriminative information when the reference
+matches the true introgression source (see main text for domain discussion).}
 \label{tab:sensitivity}
 \end{table}
 
 %% ── Supplementary Table S4 ──────────────────────────────────────────────────
 \subsection*{Supplementary Table S4: Stricter F1 evaluation}
 
-Segment-level F1 under 50\% reciprocal-overlap criterion (versus the default 1-bp overlap).
+ArchaicPainter F1 under two segment-overlap evaluation criteria
+(50-replicate benchmark, seeds 42--91).
 
 \begin{table}[h]
 \centering
 \begin{tabular}{lcc}
 \hline
-\textbf{Method} & \textbf{Mean F1 (1-bp overlap)} & \textbf{Mean F1 (50\% overlap)} \\
+\textbf{Evaluation criterion} & \textbf{Mean F1} & \textbf{Std F1} \\
 \hline
-ArchaicPainter (standard) & 0.480 & 0.388 \\
-Poisson density baseline & 0.009 & 0.003 \\
-\hline
-Fold improvement & $56\times$ & $\sim$129$\times$ \\
+1-bp reciprocal overlap (default) & 0.480 & 0.095 \\
+50\% reciprocal overlap (strict)  & 0.388 & 0.094 \\
 \hline
 \end{tabular}
-\caption{The $56\times$ F1 advantage persists and widens under a stricter 50\%
-reciprocal-overlap criterion, confirming that \AP{}'s advantage is not an artifact
-of lenient overlap counting. The 50\%-overlap F1 for \AP{} reflects longer,
-more precisely localised segments rather than fragmented short calls.}
+\caption{\AP{} (standard bidirectional emission) F1 under two overlap criteria.
+The modest drop from 0.480 to 0.388 under the stricter 50\% criterion
+reflects boundary imprecision at sparse informative-site density,
+not a qualitative failure of segment detection.}
 \label{tab:strict_f1}
 \end{table}
 
@@ -187,11 +188,12 @@ more precisely localised segments rather than fragmented short calls.}
 Transition probabilities follow $\exp(-d \cdot t)$ where $d$ is the recombination distance
 in Morgans and $t$ is the admixture time in generations.
 Emission models are shown for both the standard bidirectional mode (simulation, where
-the reference matches the true donor) and the positive-only mode (real data, where
-reference--donor divergence makes mismatches uninformative).
+the reference matches the true donor) and the positive-only log-score mode (real data, where
+reference--donor divergence requires down-weighting mismatch evidence; see main text).
 \textbf{(b)} Default HMM parameter values with biological justifications.
-All parameters are derived from published coalescent theory and admixture time estimates;
-no parameters are fitted to training data.
+Core HMM parameters ($t_\mathrm{admix}$, $t_\mathrm{split}$, $\pi_\mathrm{NEA}$, $\theta_\mathrm{emit}$) are derived from published coalescent theory;
+post-processing thresholds (merge gap, min segment) are calibrated
+by grid search on simulation to maximise F1.
 \textbf{(c)} Example Viterbi decoding output on a single simulated haplotype (seed 42,
 5~Mb region, 2\% Neanderthal admixture).
 The true introgressed segment (SNPs 60--140, orange shading) generates a dense cluster

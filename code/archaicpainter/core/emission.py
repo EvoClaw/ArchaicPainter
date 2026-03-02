@@ -113,10 +113,14 @@ def compute_archaic_emission(
     match = homozygous & (~missing_query) & (obs == a1)
     mismatch = homozygous & (~missing_query) & (obs != a1)
     log_p[match] = np.log(1.0 - theta)
-    # Mismatches: penalize in simulation mode; treat as uninformative in real-data mode
+    # Mismatches: penalize in simulation mode; down-weight in real-data mode.
+    # positive_only sets log P(mismatch|NEA) = log(0.5), so mismatches provide
+    # mild negative evidence for NEA rather than strong penalisation.
+    # This matches Eq.(emiss_nea_pos) in the paper: ell(mismatch) = log(1/2).
     if not positive_only:
         log_p[mismatch] = np.log(theta)
-    # else: log_p[mismatch] stays 0 (uninformative)
+    else:
+        log_p[mismatch] = np.log(0.5)
 
     # Heterozygous archaic: 50/50, uninformative
     log_p[heterozygous] = np.log(0.5)

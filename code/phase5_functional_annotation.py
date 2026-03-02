@@ -12,8 +12,8 @@ from collections import defaultdict
 warnings.filterwarnings("ignore")
 
 OUT_DIR = Path("/home/yanlin/livestock/docs/05_execution")
-BED_CEU = str(OUT_DIR / "archaicpainter_chr21_full_CEU_v4.bed")
-BED_CHB = str(OUT_DIR / "archaicpainter_chr21_full_CHB_v4.bed")
+BED_CEU = str(OUT_DIR / "archaicpainter_chr21_CEU_v5.bed")
+BED_CHB = str(OUT_DIR / "archaicpainter_chr21_CHB_v5.bed")
 
 # ────────────────────────────────────────────────────────────────────────────
 # 1. Load detected segments

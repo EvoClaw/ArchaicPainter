@@ -4,34 +4,33 @@ yet existing detection methods quantify introgression through archaic variant de
 discarding the haplotype match-length signal that coalescent theory predicts to
 differ $\sim$11-fold between introgressed and non-introgressed segments.
 Here we introduce \textbf{ArchaicPainter} (\AP{}), a three-state
-(AMH / Neanderthal / Denisovan) Hidden Markov Model that extends the
-Li \& Stephens haplotype copying framework to archaic reference genomes,
-explicitly encoding match-length information in coalescent-theoretic emission
-and transition probabilities.
+(AMH / Neanderthal / Denisovan) Hidden Markov Model that adapts the
+tract-length transition structure of the Li \& Stephens haplotype copying model
+to archaic ancestry inference, with hidden states representing ancestry
+categories rather than individual reference haplotypes.
 In 50 independent simulation replicates with known ground truth,
 \AP{} achieves segment-level F1 $= 0.480 \pm 0.095$ (AUPRC $= 0.577$)
-versus F1 $= 0.009 \pm 0.003$ for a Poisson density baseline
-($56\times$ improvement; Wilcoxon $p = 8.9 \times 10^{-16}$),
-quantifying the discriminative value of haplotype structure
-over density-counting alone.
+(AUPRC $= 0.577$),
 Ablation analysis reveals that the gain derives from a bidirectional emission model
 exploiting both matches and mismatches as archaic-state evidence;
 a positive-only emission mode --- appropriate when the available archaic reference
 diverges from the true introgressing population --- is provided for real-data use.
 Applied to chromosome~21 from 1000~Genomes Project Phase~3 data,
-\AP{} detects $2.28\% \pm 1.22\%$ Neanderthal ancestry in Europeans (CEU)
-and $2.09\% \pm 0.77\%$ in East Asians (CHB)
-(median segment length $\sim$90--113~kb), consistent with published genome-wide
+\AP{} detects $1.10\% \pm 0.60\%$ Neanderthal ancestry in Europeans (CEU)
+and $0.98\% \pm 0.52\%$ in East Asians (CHB)
+(median segment length $\sim$28--57~kb), consistent with published genome-wide
 estimates and complementary to IBDmix's high-sensitivity short-tract detection.
 A three-state extension achieves proof-of-concept simultaneous Neanderthal and
 Denisovan source attribution (NEA F1 $= 0.260$, DEN F1 $= 0.188$),
 and near-linear computational scaling (empirical exponent 1.21, $0.11$~s per
 haplotype at $n = 1{,}000$) supports population-scale deployment.
-Functional annotation of detected chr21 regions overlaps with 7 of 16 published
-adaptive introgression candidates and a complete interferon receptor gene cluster
-(\textit{IFNAR1}, \textit{IFNAR2}, \textit{IFNGR2}, \textit{IL10RB}) in an
-unsupervised manner, consistent with adaptive retention of archaic antiviral
-immunity haplotypes in Europeans.
+As an illustrative application, functional annotation of detected chr21 regions
+recovers 7 of 16 published adaptive introgression candidates and a complete
+interferon receptor gene cluster
+(\textit{IFNAR1}, \textit{IFNAR2}, \textit{IFNGR2}, \textit{IL10RB})
+in an unsupervised manner, consistent with previously reported archaic
+contributions to antiviral immunity; formal permutation-based enrichment
+tests are needed to establish statistical significance.
 \AP{} is released as open-source software with reproducible pipelines
 for community reuse.
 \end{abstract}
